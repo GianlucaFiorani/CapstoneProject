@@ -41,5 +41,16 @@ public class AuthorizationService {
         }
     }
 
+    public Boolean checkIdentifier(String identifier) {
+        User found = null;
+        try {
+            if (identifier.contains("@")) found = this.userService.findByEmail(identifier);
+            else found = this.userService.findByUsername(identifier);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
 
 }

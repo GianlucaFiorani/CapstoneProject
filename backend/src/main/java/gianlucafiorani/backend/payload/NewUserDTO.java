@@ -18,8 +18,10 @@ public record NewUserDTO(
         @NotEmpty(message = "L'indirizzo email è obbligatorio")
         @Email(message = "L'indirizzo email inserito non è nel formato giusto")
         String email,
-        @NotEmpty(message = "La password è obbligatoria!")
-        @Size(min = 4)
-        @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{4,}$", message = "La password deve contenere: 1 carat maiuscolo, uno minuscolo e uno speciale")
+        @Size(min = 8, message = "La password deve essere lunga almeno 8 caratteri")
+        @Pattern(
+                regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-={}|\\[\\]:\";'<>?,./]).+$",
+                message = "La password deve contenere: 1 maiuscola, 1 minuscola, 1 numero e 1 carattere speciale"
+        )
         String password) {
 }

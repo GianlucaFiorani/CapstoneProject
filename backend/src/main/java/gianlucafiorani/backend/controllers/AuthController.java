@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@Validated
 public class AuthController {
     @Autowired
     private AuthorizationService authService;
@@ -40,6 +41,11 @@ public class AuthController {
             return new NewUserRespDTO(newUser.getId());
         }
 
+    }
+
+    @GetMapping("/{identifier}")
+    public Boolean checkIdentifier(@PathVariable String identifier) {
+        return authService.checkIdentifier(identifier);
     }
 
 }
