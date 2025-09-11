@@ -39,21 +39,23 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String password;
-    
-    private String nome;
-    private String cognome;
+
+    private String name;
+    private String surname;
     private String avatar;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private Boolean verified;
 
-    public User(String username, String email, String password, String nome, String cognome, String avatar) {
+    public User(String username, String email, String password, String name, String surname, String avatar) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.nome = nome;
-        this.cognome = cognome;
+        this.name = name;
+        this.surname = surname;
         this.avatar = avatar;
         this.role = Role.USER;
+        this.verified = false;
     }
 
     @Override
@@ -66,9 +68,10 @@ public class User implements UserDetails {
         return "User{" +
                 "username='" + username + '\'' +
                 ", email='" + email + '\'' +
-                ", nome='" + nome + '\'' +
-                ", cognome='" + cognome + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
                 ", avatar='" + avatar + '\'' +
+                ", verified='" + verified + '\'' +
                 '}';
     }
 }

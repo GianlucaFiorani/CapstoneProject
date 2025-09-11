@@ -33,11 +33,16 @@ public class AuthorizationService {
             }
         }
 
-        if (bcrypt.matches(body.password(), found.getPassword())) {
+        if (found.getVerified()) {
 
-            return jwtTools.createToken(found);
+            if (bcrypt.matches(body.password(), found.getPassword())) {
+
+                return jwtTools.createToken(found, 7, "login");
+            } else {
+                throw new UnauthorizedException("Incorrect credentials!");
+            }
         } else {
-            throw new UnauthorizedException("Incorrect credentials!");
+            throw new UnauthorizedException("User not activated!");
         }
     }
 

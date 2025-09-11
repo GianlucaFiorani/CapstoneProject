@@ -48,4 +48,8 @@ public class AuthController {
         return authService.checkIdentifier(identifier);
     }
 
+    @GetMapping("/verify")
+    public void verifyEmail(@RequestParam String token) {
+        usersService.verifyEmail(token);
+    }
 }

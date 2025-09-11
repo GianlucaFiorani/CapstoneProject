@@ -4,8 +4,12 @@ package gianlucafiorani.backend.service;
 import gianlucafiorani.backend.entities.User;
 import gianlucafiorani.backend.exception.BadRequestException;
 import gianlucafiorani.backend.exception.NotFoundException;
+import gianlucafiorani.backend.exception.UnauthorizedException;
 import gianlucafiorani.backend.payload.NewUserDTO;
 import gianlucafiorani.backend.repositories.UsersRepository;
+import gianlucafiorani.backend.tools.JWTTools;
+import gianlucafiorani.backend.tools.MailgunSender;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,10 @@ public class UserService {
     private UsersRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private MailgunSender mailgunSender;
+    @Autowired
+    private JWTTools jwtTools;
 
     // CREATE
     public User save(NewUserDTO dto) {
@@ -41,8 +49,10 @@ public class UserService {
                 dto.surname(),
                 "https://ui-avatars.com/api/?name=" + dto.name() + "+" + dto.surname()
         );
-
-        return userRepository.save(user);
+        User saveUser = userRepository.save(user);
+        String token = jwtTools.createToken(user, 1, "email_verification");
+        mailgunSender.sendRegistrationEmail(user, token);
+        return saveUser;
     }
 
     // READ
@@ -69,6 +79,7 @@ public class UserService {
     public User findByIdAndUpdate(UUID userId, NewUserDTO dto) {
         User user = findById(userId);
 
+
         if (!user.getEmail().equals(dto.email())) {
             userRepository.findByEmail(dto.email()).ifPresent(u -> {
                 throw new BadRequestException("Email '" + dto.email() + "' already used");
@@ -76,11 +87,12 @@ public class UserService {
         }
 
         user.setUsername(dto.username());
-        user.setNome(dto.name());
-        user.setCognome(dto.surname());
+        user.setName(dto.name());
+        user.setSurname(dto.surname());
         user.setEmail(dto.email());
         user.setPassword(passwordEncoder.encode(dto.password()));
         user.setAvatar("https://ui-avatars.com/api/?name=" + dto.name() + "+" + dto.surname());
+
 
         return userRepository.save(user);
     }
@@ -89,6 +101,22 @@ public class UserService {
     public void findByIdAndDelete(UUID userId) {
         User user = findById(userId);
         userRepository.delete(user);
+    }
+
+    //VERIFY
+    public void verifyEmail(String token) {
+        Claims claims = jwtTools.verifyTokenAndExtractClaims(token);
+        if (!"email_verification".equals(claims.get("type"))) {
+            throw new UnauthorizedException("Not valid token");
+        }
+        String userId = jwtTools.extractIdFromToken(token);
+        User user = findById(UUID.fromString(userId));
+        if (user.getVerified()) {
+            throw new BadRequestException("User already verify");
+        } else {
+            user.setVerified(true);
+            userRepository.save(user);
+        }
     }
 
 
