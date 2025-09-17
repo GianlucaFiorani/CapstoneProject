@@ -1,5 +1,6 @@
 package gianlucafiorani.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -35,6 +36,7 @@ public class BasketballCourt {
     private User createdBy;
 
     @Column(columnDefinition = "geography(Point,4326)")
+    @JsonIgnore
     private Point location;
 
     public BasketballCourt( String name, double lat, double lon,User createdBy) {
@@ -51,6 +53,7 @@ public class BasketballCourt {
                 " name='" + name + '\'' +
                 ", lat=" + lat +
                 ", lon=" + lon +
+                ", addBy=" + createdBy.getId() +
                 '}';
     }
 }

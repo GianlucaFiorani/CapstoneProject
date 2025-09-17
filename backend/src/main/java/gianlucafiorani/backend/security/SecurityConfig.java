@@ -31,8 +31,10 @@ public class SecurityConfig {
                 sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 
-        httpSecurity.authorizeHttpRequests(h ->
-                h.requestMatchers("/**").permitAll());
+        httpSecurity.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/**").permitAll()
+                //.anyRequest().authenticated()
+        );
 
 
         return httpSecurity.build();

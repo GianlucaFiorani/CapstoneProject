@@ -60,9 +60,8 @@ public class FirstStartRunner implements CommandLineRunner {
         );
 
         for (String area : europeTiles) {
-            basketballCourtService.fetchAndSave(area, userService.findByUsername("Admin"));
+            //basketballCourtService.fetchAndSave(area, userService.findByUsername("Admin"));
         }
-
     }
 
 }
