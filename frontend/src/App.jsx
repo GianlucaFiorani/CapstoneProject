@@ -3,6 +3,7 @@ import Login from "./components/Login";
 import Register from "./components/registration/Register";
 import Home from "./components/Home";
 import Verify from "./components/registration/Verify";
+import "leaflet/dist/leaflet.css";
 
 function App() {
   return (

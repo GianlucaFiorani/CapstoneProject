@@ -5,11 +5,9 @@ import gianlucafiorani.backend.entities.User;
 import gianlucafiorani.backend.payload.NewBasketballCourtDTO;
 import gianlucafiorani.backend.service.BasketballCourtService;
 import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

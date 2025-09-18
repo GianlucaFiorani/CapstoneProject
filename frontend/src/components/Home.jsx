@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { Table, Container, Alert, Spinner, Button, ButtonGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import Map from "./Map";
 
 const Home = () => {
-  const [clienti, setClienti] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [courts, setCourts] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,6 +17,25 @@ const Home = () => {
       setError("Non sei autenticato");
       setLoading(false);
       return;
+    } else {
+      fetch("http://localhost:3001/courts", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Errore caricamento Fatture");
+          return res.json();
+        })
+        .then((data) => {
+          setCourts(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(err.message);
+          setLoading(false);
+        });
     }
   }, []);
 
@@ -58,7 +79,9 @@ const Home = () => {
         justifyContent: "center",
         overflowX: "hidden",
       }}
-    ></div>
+    >
+      <Map courts={courts} />
+    </div>
   );
 };
 
