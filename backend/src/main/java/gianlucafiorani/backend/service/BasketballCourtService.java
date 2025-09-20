@@ -5,12 +5,15 @@ import gianlucafiorani.backend.entities.Role;
 import gianlucafiorani.backend.entities.User;
 import gianlucafiorani.backend.exception.BadRequestException;
 import gianlucafiorani.backend.exception.NotFoundException;
+import gianlucafiorani.backend.payload.BasketballCourtRespDTO;
 import gianlucafiorani.backend.payload.NewBasketballCourtDTO;
 import gianlucafiorani.backend.repositories.BasketballCourtRepository;
+import gianlucafiorani.backend.repositories.ReviewRepository;
 import gianlucafiorani.backend.tools.OsmFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,6 +27,8 @@ public class BasketballCourtService {
     private BasketballCourtRepository basketballCourtRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     String italy="35.0,6.0,47.0,18.0";
 
@@ -67,8 +72,23 @@ public class BasketballCourtService {
         System.out.println("esistenti: " + err);
    }
 
-    public List<BasketballCourt> findAllCourts() {
-        return basketballCourtRepository.findAll();
+    public List<BasketballCourtRespDTO> findAllCourts() {
+        List<BasketballCourtRespDTO> respDtoList = new ArrayList<>();
+        List<BasketballCourt> courtList = basketballCourtRepository.findAll();
+        for (BasketballCourt court : courtList){
+            Double avg = reviewRepository.findAverageRatingByCourt_Id(court.getId());
+            double safeAvg = avg != null ? avg : 0.0;
+            BasketballCourtRespDTO respDTO = new BasketballCourtRespDTO(
+                   court.getId(),
+                   court.getName(),
+                   court.getLat(),
+                   court.getLon(),
+                    safeAvg,
+                    reviewRepository.countByCourt(court)
+            );
+            respDtoList.add(respDTO);
+        }
+        return respDtoList;
     }
 
     public BasketballCourt findByIdAndUpdate(UUID courtId, User currentUser, NewBasketballCourtDTO payload) {

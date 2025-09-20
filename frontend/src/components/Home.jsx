@@ -25,7 +25,7 @@ const Home = () => {
         },
       })
         .then((res) => {
-          if (!res.ok) throw new Error("Errore caricamento Fatture");
+          if (!res.ok) throw new Error("Errore caricamento");
           return res.json();
         })
         .then((data) => {

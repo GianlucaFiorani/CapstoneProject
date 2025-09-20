@@ -9,7 +9,10 @@ const Map = ({ courts }) => {
 
       {courts.map((court) => (
         <Marker key={court.id} position={[court.lat, court.lon]}>
-          <Popup>{court.name || "Basketball Court"}</Popup>
+          <Popup>
+            {court.name || "Basketball Court"}
+            <h2>{court.ratingAv}</h2>
+          </Popup>
         </Marker>
       ))}
     </MapContainer>

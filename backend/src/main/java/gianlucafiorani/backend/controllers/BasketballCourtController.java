@@ -2,6 +2,7 @@ package gianlucafiorani.backend.controllers;
 
 import gianlucafiorani.backend.entities.BasketballCourt;
 import gianlucafiorani.backend.entities.User;
+import gianlucafiorani.backend.payload.BasketballCourtRespDTO;
 import gianlucafiorani.backend.payload.NewBasketballCourtDTO;
 import gianlucafiorani.backend.service.BasketballCourtService;
 import jakarta.validation.Valid;
@@ -23,7 +24,7 @@ public class BasketballCourtController {
 
 
         @GetMapping
-        public List<BasketballCourt> getAllCourts() {
+        public List<BasketballCourtRespDTO> getAllCourts() {
             return basketballCourtService
                     .findAllCourts();
         }
