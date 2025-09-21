@@ -1,4 +1,6 @@
 package gianlucafiorani.backend.payload;
 
-public record LoginRespDTO(String accessToken) {
+import java.util.UUID;
+
+public record LoginRespDTO(String accessToken, UUID userId) {
 }

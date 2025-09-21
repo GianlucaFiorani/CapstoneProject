@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class AuthorizationService {
 
@@ -55,6 +57,13 @@ public class AuthorizationService {
             return false;
         }
         return true;
+    }
+
+    public UUID getId(String identifier) {
+        User found = null;
+            if (identifier.contains("@")) found = this.userService.findByEmail(identifier);
+            else found = this.userService.findByUsername(identifier);
+        return found.getId();
     }
 
 

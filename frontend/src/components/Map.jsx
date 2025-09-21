@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Button } from "react-bootstrap";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import SingleMarker from "./SingleMarker";
 
 const Map = ({ courts }) => {
   const center = courts.length > 0 ? [courts[0].lat, courts[0].lon] : [45.4642, 9.19];
@@ -8,12 +10,7 @@ const Map = ({ courts }) => {
       <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
 
       {courts.map((court) => (
-        <Marker key={court.id} position={[court.lat, court.lon]}>
-          <Popup>
-            {court.name || "Basketball Court"}
-            <h2>{court.ratingAv}</h2>
-          </Popup>
-        </Marker>
+        <SingleMarker key={court.id} court={court} />
       ))}
     </MapContainer>
   );

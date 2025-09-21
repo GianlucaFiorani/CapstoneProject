@@ -30,6 +30,7 @@ const Login = () => {
       const data = await response.json();
       console.log("Risposta login:", data);
       localStorage.setItem("token", data.accessToken);
+      localStorage.setItem("userId", data.userId);
       setSuccess("Login effettuato con successo!");
       navigate("/");
     } catch (err) {

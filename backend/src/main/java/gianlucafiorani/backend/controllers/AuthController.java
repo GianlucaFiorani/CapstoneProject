@@ -14,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -27,7 +29,8 @@ public class AuthController {
     @PostMapping("/login")
     public LoginRespDTO login(@RequestBody LoginDTO body) {
         String accessToken = authService.checkCredentialsAndGenerateToken(body);
-        return new LoginRespDTO(accessToken);
+        UUID id = authService.getId(body.identifier());
+        return new LoginRespDTO(accessToken,id);
     }
 
     @PostMapping("/register")
