@@ -17,4 +17,6 @@ public interface ReviewRepository extends JpaRepository<Review, UUID> {
     Double findAverageRatingByCourt_Id(@Param("courtId") UUID courtId);
 
     Integer countByCourt(BasketballCourt court);
+
+    List<Review> findByCourt(BasketballCourt court);
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Table, Container, Alert, Spinner, Button, ButtonGroup } from "react-bootstrap";
+import { Container, Alert, Spinner, Button, ButtonGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Map from "./Map";
 

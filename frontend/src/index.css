@@ -1,0 +1,19 @@
+.z-1000 {
+  z-index: 1000 !important;
+}
+
+.bg-1 {
+  background-color: #e78f0cff !important;
+}
+
+.bg-2 {
+  background-color: #795548 !important;
+}
+
+.border-c1 {
+  border-color: #795548 !important;
+}
+
+.leaflet-popup-tip-container {
+  display: none !important;
+}

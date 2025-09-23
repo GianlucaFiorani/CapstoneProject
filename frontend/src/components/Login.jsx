@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Form, Button, Container, Row, Col, Card, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import logo from "../assets/img/logo.png";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -55,7 +56,8 @@ const Login = () => {
           <Col xs={12} sm={10} md={8} lg={6} xl={5}>
             <Card className="p-4 shadow-lg border-0 rounded-4" style={{ backgroundColor: "#2c2f3b00" }}>
               <Card.Body>
-                <h3 className="text-center mb-4">Benvenuto </h3>
+                <img src={logo} alt="Spotify Logo" />
+
                 {error && <Alert variant="danger">{error}</Alert>}
                 {success && <Alert variant="success">{success}</Alert>}
 

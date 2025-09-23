@@ -91,6 +91,20 @@ public class BasketballCourtService {
         return respDtoList;
     }
 
+    public BasketballCourtRespDTO findCourt(UUID id) {
+        BasketballCourt found = findById(id);
+            Double avg = reviewRepository.findAverageRatingByCourt_Id(id);
+            double safeAvg = avg != null ? avg : 0.0;
+           return  new BasketballCourtRespDTO(
+                    found.getId(),
+                    found.getName(),
+                    found.getLat(),
+                    found.getLon(),
+                    safeAvg,
+                    reviewRepository.countByCourt(found)
+            );
+    }
+
     public BasketballCourt findByIdAndUpdate(UUID courtId, User currentUser, NewBasketballCourtDTO payload) {
         BasketballCourt found = this.findById(courtId);
         if (found.getCreatedBy() == currentUser || currentUser.getRole() == Role.ADMIN){

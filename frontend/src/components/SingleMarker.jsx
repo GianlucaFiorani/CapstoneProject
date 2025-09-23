@@ -1,12 +1,22 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "react-bootstrap";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { Marker, Popup } from "react-leaflet";
+import { Link } from "react-router-dom";
+import marker from "../assets/img/marker.png";
 
-const SingleMarker = ({ court }) => {
+const SingleMarker = ({ court, go }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isPresent, setIsPresent] = useState(false);
   const [players, setPlayers] = useState([]);
+
+  const customIcon = new L.Icon({
+    iconUrl: marker,
+    iconSize: [36, 43],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -40],
+    shadowUrl: null,
+  });
 
   const printRating = (ratingAv) => {
     const stars = [];
@@ -43,7 +53,6 @@ const SingleMarker = ({ court }) => {
       .then((data) => {
         setPlayers(data);
         const currentUserId = localStorage.getItem("userId");
-        console.log(currentUserId);
         const isCheckedIn = data.some((player) => player.user.id === currentUserId);
         setIsPresent(isCheckedIn);
         setLoading(false);
@@ -100,13 +109,20 @@ const SingleMarker = ({ court }) => {
     }
   };
   return (
-    <Marker position={[court.lat, court.lon]}>
+    <Marker
+      icon={customIcon}
+      position={[court.lat, court.lon]}
+      eventHandlers={{
+        click: () => go([court.lat, court.lon]),
+      }}
+    >
       <Popup
+        autoPan={false}
         eventHandlers={{
           add: () => fetchAndCheckPresence(court.id),
         }}
       >
-        {court.name || "Basketball Court"}
+        <Link to={"/court-details/" + court.id}> {court.name || "Basketball Court"}</Link>
         <h2 className="d-flex ">
           <span className="fs-6">{court.ratingAv + "/5"}</span>
           <div>{printRating(court.ratingAv)}</div>

@@ -28,6 +28,10 @@ public class BasketballCourtController {
             return basketballCourtService
                     .findAllCourts();
         }
+        @GetMapping("{id}")
+        public BasketballCourtRespDTO getCourt(@PathVariable UUID id) {
+                return basketballCourtService.findCourt(id);
+        }
 
         @PostMapping
         @ResponseStatus(HttpStatus.CREATED)

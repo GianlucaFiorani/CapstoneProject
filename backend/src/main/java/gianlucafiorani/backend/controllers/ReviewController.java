@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -18,6 +19,11 @@ public class ReviewController {
 
     @Autowired
     ReviewService reviewService;
+
+    @GetMapping("{id}")
+    public List<Review> getAll(@PathVariable UUID id){
+     return reviewService.findByCourt(id);
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

@@ -11,6 +11,7 @@ import gianlucafiorani.backend.repositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -59,7 +60,10 @@ public class ReviewService {
         }
     }
 
-
+public List<Review> findByCourt(UUID id){
+        BasketballCourt found = basketballCourtService.findById(id);
+       return reviewRepository.findByCourt(found);
+}
 
 
 }

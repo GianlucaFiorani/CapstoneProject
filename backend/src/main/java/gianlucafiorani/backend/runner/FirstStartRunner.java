@@ -7,6 +7,7 @@ import gianlucafiorani.backend.service.BasketballCourtService;
 import gianlucafiorani.backend.service.UserService;
 import gianlucafiorani.backend.tools.JWTTools;
 import gianlucafiorani.backend.tools.MailgunSender;
+import gianlucafiorani.backend.tools.NominatimGeocode;
 import gianlucafiorani.backend.tools.OsmFetcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,9 +29,7 @@ public class FirstStartRunner implements CommandLineRunner {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private JWTTools jwtTools;
-    @Autowired
-    private UserService userService;
+    private NominatimGeocode nominatimGeocode;
     @Autowired
     private BasketballCourtService basketballCourtService;
 
