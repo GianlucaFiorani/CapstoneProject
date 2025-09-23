@@ -5,17 +5,21 @@ import SingleMarker from "./SingleMarker";
 import MapController from "./MapController";
 import ZoomController from "./ZoomController";
 import me from "../assets/img/me.png";
-import AddCourt from "./svg/AddCourt";
 import AddCourtHandler from "./AddCourtHandler";
-import { BiCrosshair } from "react-icons/bi";
 import { BsCrosshair } from "react-icons/bs";
+import Autocomplete from "./Autocomplete";
+import AddCourt from "./svg/AddCourt";
+import { useRef } from "react";
 
 const Map = ({ courts }) => {
+  const inputRef = useRef(null);
   const [searchLocation, setSearchLocation] = useState("");
   const [userPosition, setUserPosition] = useState(null);
   const [searchPosition, setSearchPosition] = useState(null);
   const [addCourt, setAddCourt] = useState(false);
+  const [sugg, setSugg] = useState([]);
   const [zoomLevel, setZoomLevel] = useState(13);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const center = userPosition ? userPosition : [45.4642, 9.19];
 
   const customIcon = new L.Icon({
@@ -25,8 +29,7 @@ const Map = ({ courts }) => {
     popupAnchor: [0, -40],
     shadowUrl: null,
   });
-
-  const handleSearch = async () => {
+  const fetchGeocode = async () => {
     if (!searchLocation) return;
     const token = localStorage.getItem("token");
     fetch(`http://localhost:3001/geocode/${searchLocation}`, {
@@ -37,12 +40,17 @@ const Map = ({ courts }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        const { lat, lon } = data[0];
-        setSearchPosition([parseFloat(lat), parseFloat(lon)]);
+        setSugg(data);
       })
       .catch((err) => {
         console.error("Errore nella geocodifica:", err);
       });
+  };
+
+  const handleSearch = () => {
+    fetchGeocode();
+    const { lat, lon } = sugg[0];
+    setSearchPosition([parseFloat(lat), parseFloat(lon)]);
   };
 
   useEffect(() => {
@@ -88,6 +96,7 @@ const Map = ({ courts }) => {
       >
         <BsCrosshair size={35} />
       </Button>
+
       <div className="mt-4 position-absolute z-1000">
         <div className="d-flex justify-content-between">
           <div className="d-flex align-items-center gap-5">
@@ -96,19 +105,33 @@ const Map = ({ courts }) => {
               onSubmit={(e) => {
                 e.preventDefault();
                 handleSearch();
+                inputRef.current?.blur();
               }}
             >
               <Form.Control
+                ref={inputRef}
                 type="text"
                 placeholder={`Cerca qui`}
-                className="me-2"
+                onFocus={() => {
+                  searchLocation > 2 && setShowSuggestions(true);
+                }}
+                onBlur={() => {
+                  setTimeout(() => setShowSuggestions(false), 100);
+                }}
                 onChange={(e) => {
                   setSearchLocation(e.target.value);
+                  if (e.target.value.length > 2) {
+                    fetchGeocode();
+                    setShowSuggestions(true);
+                  } else {
+                    setShowSuggestions(false);
+                  }
                 }}
               />
             </Form>
           </div>
         </div>
+        {showSuggestions && <Autocomplete search={sugg} setSearch={setSugg} go={setSearchPosition} />}
       </div>
 
       <MapContainer

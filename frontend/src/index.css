@@ -13,6 +13,12 @@
 .border-c1 {
   border-color: #795548 !important;
 }
+.fs-7 {
+  font-size: smaller;
+}
+.fs-8 {
+  font-size: xx-small;
+}
 
 .leaflet-popup-tip-container {
   display: none !important;
