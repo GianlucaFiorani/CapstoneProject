@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Form, Button, Container, Row, Col, Card, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../assets/img/logo.png";
+import logo from "../assets/img/logonw.png";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -31,7 +31,6 @@ const Login = () => {
       const data = await response.json();
       console.log("Risposta login:", data);
       localStorage.setItem("token", data.accessToken);
-      localStorage.setItem("userId", data.userId);
       setSuccess("Login effettuato con successo!");
       navigate("/");
     } catch (err) {

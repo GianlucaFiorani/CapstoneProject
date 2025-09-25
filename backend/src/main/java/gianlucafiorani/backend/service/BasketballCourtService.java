@@ -83,7 +83,7 @@ public class BasketballCourtService {
                    court.getName(),
                    court.getLat(),
                    court.getLon(),
-                    safeAvg,
+                    Math.round(safeAvg* 2) / 2.0,
                     reviewRepository.countByCourt(court)
             );
             respDtoList.add(respDTO);
@@ -100,7 +100,7 @@ public class BasketballCourtService {
                     found.getName(),
                     found.getLat(),
                     found.getLon(),
-                    safeAvg,
+                   Math.round(safeAvg* 2) / 2.0,
                     reviewRepository.countByCourt(found)
             );
     }

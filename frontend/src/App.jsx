@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/registration/Register";
-import Home from "./components/Home";
+import Home from "./components/map/Home";
 import Verify from "./components/registration/Verify";
 import "leaflet/dist/leaflet.css";
 import CourtDetails from "./components/CourtDetails";

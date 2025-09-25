@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -24,21 +24,25 @@ public class Review {
 
     private String comment;
 
+    private String imageUrl;
+
     @ManyToOne
     private User user;
 
     @ManyToOne
     private BasketballCourt court;
 
-    private LocalDate date;
+    private LocalDateTime date;
 
-    public Review( String comment, int rating, User user, BasketballCourt court) {
+    public Review( String comment, int rating, User user, BasketballCourt court,String imageUrl) {
         this.comment = comment;
         this.rating = rating;
         this.user = user;
         this.court = court;
-        this.date = LocalDate.now();
+        this.imageUrl = imageUrl;
+        this.date = LocalDateTime.now();
     }
+
 
     @Override
     public String toString() {

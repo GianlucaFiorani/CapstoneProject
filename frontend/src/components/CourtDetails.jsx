@@ -1,8 +1,9 @@
-import { Link, useParams } from "react-router-dom";
-import { Col, Container, ListGroup, ListGroupItem, Row, Spinner } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import { Container, Spinner } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import Review from "./Review";
 import "./HorizontalScroll.css";
+import ReviewsArea from "./ReviewsArea";
+import PrintRating from "./PrintRating";
 
 const CourtDetails = () => {
   const params = useParams();
@@ -37,26 +38,6 @@ const CourtDetails = () => {
           setLoading(false);
         });
     }
-  };
-
-  const printRating = (ratingAv) => {
-    const stars = [];
-    for (let i = 0; i < 5; i++) {
-      if (i < ratingAv) {
-        stars.push(
-          <span key={i} className="text-primary">
-            *
-          </span>
-        );
-      } else {
-        stars.push(
-          <span key={i} className="text-secondary">
-            *
-          </span>
-        );
-      }
-    }
-    return <>{stars}</>;
   };
 
   useEffect(() => {
@@ -100,13 +81,16 @@ const CourtDetails = () => {
         minHeight: "100vh",
         background: "linear-gradient(135deg, #e78f0cff 0%, #fbf6e0ff 100%)",
         overflowX: "hidden",
+        position: "fixed",
       }}
     >
       <h1>{court.name}</h1>
-      <p>{printRating(court.ratingAv)}</p>
+
+      <PrintRating ratingAv={court.ratingAv} size={"20px"} />
+
       <div className="scroll-container">
         <div className="page page1">
-          <Review />
+          <ReviewsArea />
         </div>
         <div className="page page2">Pagina 2</div>
         <div className="page page3">Pagina 3</div>

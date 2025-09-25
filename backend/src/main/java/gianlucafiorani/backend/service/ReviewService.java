@@ -28,7 +28,8 @@ public class ReviewService {
                 dto.comment(),
                 dto.rating(),
                 user,
-                found
+                found,
+                dto.imageUrl()
         );
         return reviewRepository.save(newReview);
     }
@@ -62,7 +63,7 @@ public class ReviewService {
 
 public List<Review> findByCourt(UUID id){
         BasketballCourt found = basketballCourtService.findById(id);
-       return reviewRepository.findByCourt(found);
+       return reviewRepository.findByCourtOrderByDateDesc(found);
 }
 
 

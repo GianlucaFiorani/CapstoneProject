@@ -11,6 +11,7 @@ import java.util.UUID;
 
 public record NewReviewDTO(
         String comment,
+        String imageUrl,
         @Min(value = 1,message = "La valutazione deve essere compresa tra 1 e 5")
         @Max(value = 5,message = "La valutazione deve essere compresa tra 1 e 5")
         int rating,

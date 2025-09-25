@@ -11,7 +11,11 @@
 }
 
 .border-c1 {
-  border-color: #795548 !important;
+  border-color: #ffb114 !important;
+}
+.border-c1:focus {
+  border-color: #ffb114 !important;
+  box-shadow: 0 0 0 0.2rem rgba(255, 136, 0, 0.25) !important;
 }
 .fs-7 {
   font-size: smaller;
@@ -22,4 +26,19 @@
 
 .leaflet-popup-tip-container {
   display: none !important;
+}
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+[data-rr-ui-dropdown-item]:hover {
+  background-color: #f0d9bb !important;
+}
+
+.modal-content {
+  background-color: antiquewhite !important;
+}
+
+.delete-button:hover {
+  background-color: #d7af79 !important;
 }
