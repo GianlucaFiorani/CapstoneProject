@@ -29,9 +29,12 @@ const Step1 = ({ nextStep, handleChange, values }) => {
     >
       <Form className="p-2 mt-5" onSubmit={handleSubmit}>
         <Form.Group>
-          <Form.Label>Indirizzo e-mail</Form.Label>
+          <Form.Label className="fascinate-regular fs-4" style={{ color: "#795548" }}>
+            Indirizzo e-mail
+          </Form.Label>
           <Form.Control
-            className={exist ? "border-danger" : ""}
+            style={{ background: "#ffffff45" }}
+            className={exist ? "border-danger border-0 shadow border-c2 p-2 mt-3" : "border-0 shadow border-c2 p-2 mt-3"}
             type="email"
             name="email"
             value={values.email}

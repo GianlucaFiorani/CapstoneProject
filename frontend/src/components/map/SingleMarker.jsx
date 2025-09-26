@@ -105,16 +105,26 @@ const SingleMarker = ({ court, go }) => {
           add: () => fetchAndCheckPresence(court.id),
         }}
       >
-        <Link to={"/court-details/" + court.id}> {court.name || "Basketball Court"}</Link>
-        <h2 className="d-flex ">
-          <span className="fs-6">{court.ratingAv + "/5"}</span>
-          <div>
-            <PrintRating ratingAv={court.ratingAv} size={"15px"} translate={"-12px"} />
-          </div>
-          <span className="fs-6 text-secondary">{"(" + court.reviewCount + ")"}</span>
-        </h2>
-        <Button onClick={() => (isPresent ? checkOut(court.id) : checkIn(court.id))}>{isPresent ? "checkout" : "checkin"}</Button>
-        <span>{players.length}</span>
+        <div style={{ width: "300px" }}>
+          <Link to={"/court-details/" + court.id} className="fs-3 text-decoration-none fs-semibold text-black alfa-slab-one-regular fascinate-regular mb-3">
+            {court.name || "Basketball Court"}
+          </Link>
+          <h2 className="d-flex mt-3 ">
+            <span className="fs-6 me-2">{court.ratingAv + "/5"}</span>
+            <div>
+              <PrintRating ratingAv={court.ratingAv} size={"20px"} translate={"-12px"} />
+            </div>
+            <span className="fs-6 text-secondary">{"(" + court.reviewCount + ")"}</span>
+          </h2>
+          <Button
+            className="border-c2 border-3 fw-bold"
+            style={{ background: "#ffb114", color: "#795548 " }}
+            onClick={() => (isPresent ? checkOut(court.id) : checkIn(court.id))}
+          >
+            {isPresent ? "checkout" : "checkin"}
+          </Button>
+          <span className="ms-5 fw-bold fs-2">{players.length}</span>
+        </div>
       </Popup>
     </Marker>
   );

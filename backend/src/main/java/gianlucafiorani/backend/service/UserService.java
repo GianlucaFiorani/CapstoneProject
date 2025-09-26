@@ -1,6 +1,8 @@
 package gianlucafiorani.backend.service;
 
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import gianlucafiorani.backend.entities.User;
 import gianlucafiorani.backend.exception.BadRequestException;
 import gianlucafiorani.backend.exception.NotFoundException;
@@ -15,10 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -32,6 +36,8 @@ public class UserService {
     private MailgunSender mailgunSender;
     @Autowired
     private JWTTools jwtTools;
+    @Autowired
+    private Cloudinary imgUploader;
 
     // CREATE
     public User save(NewUserDTO dto) {
@@ -99,6 +105,18 @@ public class UserService {
 
 
         return userRepository.save(user);
+    }
+
+    public User uploadAvatar(UUID id, MultipartFile file) {
+        try {
+            User found = this.findById(id);
+            Map result = imgUploader.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            String imageURL = (String) result.get("url");
+            found.setAvatar(imageURL);
+            return userRepository.save(found);
+        } catch (Exception e) {
+            throw new BadRequestException("Ci sono stati problemi nel salvataggio del file!");
+        }
     }
 
     // DELETE

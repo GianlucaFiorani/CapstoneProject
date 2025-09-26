@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Form, Button, Container, Row, Col, Card, Alert } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../assets/img/logonw.png";
+import logo from "../assets/img/logoBg.jpg";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,22 +55,44 @@ const Login = () => {
       <Container>
         <Row className="justify-content-center">
           <Col xs={12} sm={10} md={8} lg={6} xl={5}>
-            <Card className="p-4 shadow-lg border-0 rounded-4" style={{ backgroundColor: "#2c2f3b00" }}>
-              <Card.Body>
-                <img src={logo} alt="Spotify Logo" />
-
+            <Card className="shadow-lg border-0 rounded-4" style={{ backgroundColor: "#2c2f3b00", overflow: "hidden" }}>
+              <Card.Body style={{}}>
+                <div className="d-flex align-items-center justify-content-center">
+                  <img src={logo} alt="logo" className="shadow-lg " style={{ borderRadius: "100%", filter: "brightness(1.2)", width: "500px" }} />
+                </div>
                 {error && <Alert variant="danger">{error}</Alert>}
                 {success && <Alert variant="success">{success}</Alert>}
 
                 <Form onSubmit={handleSubmit}>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Indirizzo e-mail o username</Form.Label>
-                    <Form.Control placeholder="Inserisci la tua e-mail o username" value={identifier} onChange={(e) => setEmail(e.target.value)} required />
+                  <Form.Group className="my-4">
+                    <Form.Control
+                      className="border-0 shadow border-c2 p-2 mt-3"
+                      style={{ background: "#ffffff45" }}
+                      placeholder="Inserisci la tua e-mail o username"
+                      value={identifier}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
                   </Form.Group>
 
-                  <Form.Group className="mb-4">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Inserisci la password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                  <Form.Group className="mb-4 position-relative">
+                    <Form.Control
+                      className="border-0 shadow border-c2 p-2 "
+                      style={{ background: "#ffffff45" }}
+                      type={showPassword ? "text" : "password"}
+                      placeholder={"Inserisci la password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                    <Button
+                      type="button"
+                      className="border-0 position-absolute top-0 end-0 fs-3 p-0 pe-2"
+                      style={{ background: "#f9f9f903", color: "#795548" }}
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? <BsEye /> : <BsEyeSlash />}
+                    </Button>
                   </Form.Group>
 
                   <div className="d-grid mb-3">

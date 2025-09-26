@@ -42,19 +42,44 @@ const Step3 = ({ formData, nextStep, handleChange, values }) => {
     >
       <Form className="mt-5" onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
-          <Form.Label>Nome</Form.Label>
-          <Form.Control type="text" name="name" value={values.name} onChange={handleChange} placeholder="Inserisci nome" required />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Cognome</Form.Label>
-          <Form.Control type="text" name="surname" value={values.surname} onChange={handleChange} placeholder="Inserisci cognome" required />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Username</Form.Label>
+          <Form.Label className="fascinate-regular fs-4" style={{ color: "#795548" }}>
+            Nome
+          </Form.Label>
           <Form.Control
-            className={exist ? "border-danger" : ""}
+            style={{ background: "#ffffff45" }}
+            className={"border-0 shadow border-c2 p-2 mt-3"}
+            type="text"
+            name="name"
+            value={values.name}
+            onChange={handleChange}
+            placeholder="Inserisci nome"
+            required
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label className="fascinate-regular fs-4" style={{ color: "#795548" }}>
+            Cognome
+          </Form.Label>
+          <Form.Control
+            style={{ background: "#ffffff45" }}
+            className={"border-0 shadow border-c2 p-2 mt-3"}
+            type="text"
+            name="surname"
+            value={values.surname}
+            onChange={handleChange}
+            placeholder="Inserisci cognome"
+            required
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label className="fascinate-regular fs-4" style={{ color: "#795548" }}>
+            Username
+          </Form.Label>
+          <Form.Control
+            style={{ background: "#ffffff45" }}
+            className={exist ? "border-danger shadow  p-2 mt-3" : "border-0 shadow border-c2 p-2 mt-3"}
             type="text"
             name="username"
             value={values.username}

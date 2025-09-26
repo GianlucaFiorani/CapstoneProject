@@ -17,6 +17,13 @@
   border-color: #ffb114 !important;
   box-shadow: 0 0 0 0.2rem rgba(255, 136, 0, 0.25) !important;
 }
+.border-c2 {
+  border-color: #795548 !important;
+}
+.border-c2:focus {
+  border-color: #795548 !important;
+  box-shadow: 0 0 0 0.2rem rgba(120, 66, 4, 0.432) !important;
+}
 .fs-7 {
   font-size: smaller;
 }
@@ -31,9 +38,8 @@
 .leaflet-popup-tip-container {
   display: none !important;
 }
-
-.diplomata-regular {
-  font-family: "Diplomata", serif;
+.fascinate-regular {
+  font-family: "Fascinate", system-ui;
   font-weight: 400;
   font-style: normal;
 }

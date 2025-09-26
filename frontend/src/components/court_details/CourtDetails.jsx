@@ -96,9 +96,7 @@ const CourtDetails = () => {
       }}
     >
       <div className="p-3  shadow">
-        <h1 style={{ fontSize: "3rem" }} className="diplomata-regular">
-          {court.name}
-        </h1>
+        <h1 className="fascinate-regular fs-3 ">{court.name}</h1>
         <PrintRating ratingAv={court.ratingAv} size={"20px"} />
       </div>
 
