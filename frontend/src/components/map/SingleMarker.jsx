@@ -4,7 +4,7 @@ import { Marker, Popup } from "react-leaflet";
 import { Link } from "react-router-dom";
 import marker from "../../assets/img/marker.png";
 import { jwtDecode } from "jwt-decode";
-import PrintRating from "../PrintRating";
+import PrintRating from "../court_details/review/PrintRating";
 
 const SingleMarker = ({ court, go }) => {
   const [loading, setLoading] = useState(true);
@@ -21,26 +21,6 @@ const SingleMarker = ({ court, go }) => {
     popupAnchor: [0, -40],
     shadowUrl: null,
   });
-
-  const printRating = (ratingAv) => {
-    const stars = [];
-    for (let i = 0; i < 5; i++) {
-      if (i < ratingAv) {
-        stars.push(
-          <span key={i} className="text-primary">
-            *
-          </span>
-        );
-      } else {
-        stars.push(
-          <span key={i} className="text-secondary">
-            *
-          </span>
-        );
-      }
-    }
-    return <>{stars}</>;
-  };
 
   const fetchAndCheckPresence = (courtId) => {
     fetch("http://localhost:3001/checkins/" + courtId, {
@@ -93,7 +73,7 @@ const SingleMarker = ({ court, go }) => {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch("http://localhost:3001/checkins/checkout", {
-        method: "POST",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

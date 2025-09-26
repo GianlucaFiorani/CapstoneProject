@@ -1,0 +1,31 @@
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.blink {
+  animation: flash 1s infinite;
+}
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+[data-rr-ui-dropdown-item]:hover {
+  background-color: #f0d9bb !important;
+}
+
+.modal-content {
+  background-color: antiquewhite !important;
+}
+
+.delete-button:hover {
+  background-color: #d7af79 !important;
+}

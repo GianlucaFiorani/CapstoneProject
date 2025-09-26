@@ -6,24 +6,21 @@ import PrintRating from "./PrintRating";
 import { formatDistanceToNow } from "date-fns";
 import { it } from "date-fns/locale";
 import { jwtDecode } from "jwt-decode";
+import { useDispatch } from "react-redux";
+import { fetchReviewAction, reviewAction } from "../../../redux/action";
 
-const RviewList = ({ reviews, fetchPass }) => {
+const RviewList = ({ reviews, setLoading, setOpenEdit }) => {
   const params = useParams();
+  const dispatch = useDispatch();
   const [hasError, setHasError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [toDelete, setToDelete] = useState(null);
-  const [comment, setComment] = useState("");
-  const [rating, setRating] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
-
   const token = localStorage.getItem("token");
   const decoded = jwtDecode(token);
 
   const deleteReview = async () => {
-    setIsLoading(true);
     try {
       const response = await fetch("http://localhost:3001/reviews/" + toDelete, {
         method: "DELETE",
@@ -34,7 +31,7 @@ const RviewList = ({ reviews, fetchPass }) => {
       });
 
       if (response.ok) {
-        fetchPass();
+        dispatch(fetchReviewAction(token, params.id, setLoading));
       } else {
         throw new Error("Errore nel eliminazione del commento");
       }
@@ -43,7 +40,6 @@ const RviewList = ({ reviews, fetchPass }) => {
       setHasError(true);
       setErrorMessage(error.message);
     } finally {
-      setIsLoading(false);
       setShowModal(false);
     }
   };
@@ -95,7 +91,14 @@ const RviewList = ({ reviews, fetchPass }) => {
                 <Dropdown.Item href="#/action-1">Segnala</Dropdown.Item>
                 {(review.user.id == decoded.sub || decoded.role == "ADMIN") && (
                   <>
-                    <Dropdown.Item href="#/action-2">Modifica</Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => {
+                        dispatch(reviewAction(review.id, review.rating, review.comment, review.imageUrl));
+                        setOpenEdit(true);
+                      }}
+                    >
+                      Modifica
+                    </Dropdown.Item>
                     <Dropdown.Item
                       onClick={() => {
                         setToDelete(review.id);

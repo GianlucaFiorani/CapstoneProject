@@ -17,5 +17,7 @@ public interface CheckInRepository extends JpaRepository<CheckIn, UUID> {
 
     List<CheckIn> findByCourtAndTimeCheckOutIsNull(BasketballCourt court);
 
+    List<CheckIn> findByTimeCheckOutIsNull();
+
     Integer countByCourt(BasketballCourt court);
 }

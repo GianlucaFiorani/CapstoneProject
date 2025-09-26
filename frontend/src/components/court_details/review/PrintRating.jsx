@@ -1,5 +1,5 @@
-import Ball from "./svg/Ball";
-import Halfball from "./svg/Halfball";
+import Ball from "../../svg/Ball";
+import Halfball from "../../svg/Halfball";
 
 const PrintRating = ({ ratingAv, size, translate }) => {
   const arrayValue = ratingAv % 1 == 0 ? ratingAv : ratingAv - 0.5;

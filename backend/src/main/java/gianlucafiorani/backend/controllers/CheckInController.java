@@ -28,7 +28,7 @@ public class CheckInController {
         return checkInService.createCheckIn(currentUser,id);
     }
 
-    @PostMapping("/checkout")
+    @PutMapping("/checkout")
     @ResponseStatus(HttpStatus.CREATED)
     public void checkOut(@AuthenticationPrincipal User currentUser) {
         checkInService.createCheckOut(currentUser);

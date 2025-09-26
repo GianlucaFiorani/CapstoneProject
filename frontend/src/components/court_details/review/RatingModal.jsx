@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import Ball from "./svg/Ball";
-import { id } from "date-fns/locale";
+import Ball from "../../svg/Ball";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchReviewAction } from "../../../redux/action";
 
-const RatingModal = () => {
+const RatingModal = ({ openEdit, setOpenEdit, setLoading }) => {
   const params = useParams();
+  const dispatch = useDispatch();
   const [hover, setHover] = useState(null);
+  const [id, setId] = useState(null);
   const [rating, setRating] = useState(null);
   const [imageUrl, setIamgeUrl] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -14,19 +17,38 @@ const RatingModal = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [comment, setComment] = useState("");
+  const reduxId = useSelector((state) => state.review.id);
+  const reduxRating = useSelector((state) => state.review.rating);
+  const reduxComment = useSelector((state) => state.review.comment);
+  const reduxImage = useSelector((state) => state.review.img);
 
   const handleClick = (value) => {
     setRating(value);
     setShowModal(true);
   };
 
+  useEffect(() => {
+    if (openEdit) {
+      setId(reduxId);
+      setRating(reduxRating);
+      setComment(reduxComment);
+      setIamgeUrl(reduxImage);
+    } else {
+      setId(null);
+      setRating(null);
+      setComment("");
+      setIamgeUrl(null);
+    }
+  }, [openEdit]);
+
   const createOrEditReview = async () => {
     const token = localStorage.getItem("token");
-    const URL = id ? "http://localhost:3001/reviews" : `http://localhost:3001/reviews/${id}`;
+    const URL = id ? `http://localhost:3001/reviews/${id}` : "http://localhost:3001/reviews";
+    const method = id ? "PUT" : "POST";
     setIsLoading(true);
     try {
       const response = await fetch(URL, {
-        method: "POST",
+        method: method,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -35,7 +57,7 @@ const RatingModal = () => {
       });
 
       if (response.ok) {
-        fetchPass();
+        dispatch(fetchReviewAction(token, params.id, setLoading));
       } else {
         throw new Error("Errore nella creazione del commento");
       }
@@ -46,13 +68,12 @@ const RatingModal = () => {
     } finally {
       setIsLoading(false);
       setShowModal(false);
+      setOpenEdit(false);
     }
   };
 
   const handleSubmit = () => {
     createOrEditReview();
-    console.log("Valutazione:", rating);
-    console.log("Commento:", comment);
     setComment("");
     setRating(null);
   };
@@ -81,10 +102,11 @@ const RatingModal = () => {
       </div>
 
       <Modal
-        show={showModal}
+        show={showModal || openEdit}
         onHide={() => {
           setRating(null);
           setShowModal(false);
+          setOpenEdit(false);
         }}
         centered
       >
@@ -131,12 +153,13 @@ const RatingModal = () => {
             onClick={() => {
               setRating(null);
               setShowModal(false);
+              setOpenEdit(false);
             }}
           >
             Annulla
           </Button>
           <Button variant="primary" className="bg-1 border-0" onClick={handleSubmit}>
-            Invia
+            Pubblica
           </Button>
         </Modal.Footer>
       </Modal>

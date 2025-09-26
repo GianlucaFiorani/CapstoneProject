@@ -4,7 +4,7 @@ import Register from "./components/registration/Register";
 import Home from "./components/map/Home";
 import Verify from "./components/registration/Verify";
 import "leaflet/dist/leaflet.css";
-import CourtDetails from "./components/CourtDetails";
+import CourtDetails from "./components/court_details/CourtDetails";
 
 function App() {
   return (

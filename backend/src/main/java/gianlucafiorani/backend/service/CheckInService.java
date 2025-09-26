@@ -5,8 +5,10 @@ import gianlucafiorani.backend.entities.CheckIn;
 import gianlucafiorani.backend.entities.User;
 import gianlucafiorani.backend.repositories.CheckInRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -42,4 +44,21 @@ public class CheckInService {
         BasketballCourt found = basketballCourtService.findById(courtId);
         return checkInRepository.findByCourtAndTimeCheckOutIsNull(found);
     }
+
+    @Scheduled(fixedRate = 3600000)
+    public void autoCheckout() {
+        List<CheckIn> checkedInValid = checkInRepository.findByTimeCheckOutIsNull();
+
+        for (CheckIn checkin : checkedInValid) {
+            LocalDateTime checkInTime = checkin.getTimeCheckIn();
+            LocalDateTime now = LocalDateTime.now();
+
+            long minutes = Duration.between(checkInTime, now).toMinutes();
+
+            if (minutes >= 240) {
+                createCheckOut(checkin.getUser());
+            }
+        }
+    }
+
 }

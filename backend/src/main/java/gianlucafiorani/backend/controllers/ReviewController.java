@@ -32,7 +32,7 @@ public class ReviewController {
         return reviewService.save(dto,currentUser);
     }
 
-    @PostMapping("{id}")
+    @PutMapping("{id}")
     @ResponseStatus(HttpStatus.CREATED)
     public Review editReview(@PathVariable UUID id,
                              @AuthenticationPrincipal User currentUser,

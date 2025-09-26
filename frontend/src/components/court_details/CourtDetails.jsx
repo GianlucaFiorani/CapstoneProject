@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
-import { Container, Spinner } from "react-bootstrap";
+import { Alert, Container, Spinner } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import "./HorizontalScroll.css";
-import ReviewsArea from "./ReviewsArea";
-import PrintRating from "./PrintRating";
+import ReviewsArea from "./review/ReviewsArea";
+import PrintRating from "./review/PrintRating";
+import PlayerCheck from "./players/PlayerCheck";
+import bounce from "../../assets/img/bounce.gif";
 
 const CourtDetails = () => {
   const params = useParams();
@@ -55,7 +57,16 @@ const CourtDetails = () => {
           color: "#f1f1f1",
         }}
       >
-        <Spinner className="mt-5" animation="border" variant="danger" />
+        <div className="d-flex justify-content-center" style={{ width: "100%", height: "100vh" }}>
+          <img
+            src={bounce}
+            alt="bounce"
+            style={{
+              width: "800px",
+              objectFit: "cover",
+            }}
+          />
+        </div>
       </Container>
     );
   }
@@ -84,16 +95,21 @@ const CourtDetails = () => {
         position: "fixed",
       }}
     >
-      <h1>{court.name}</h1>
-
-      <PrintRating ratingAv={court.ratingAv} size={"20px"} />
+      <div className="p-3  shadow">
+        <h1 style={{ fontSize: "3rem" }} className="diplomata-regular">
+          {court.name}
+        </h1>
+        <PrintRating ratingAv={court.ratingAv} size={"20px"} />
+      </div>
 
       <div className="scroll-container">
         <div className="page page1">
           <ReviewsArea />
         </div>
-        <div className="page page2">Pagina 2</div>
-        <div className="page page3">Pagina 3</div>
+        <div className="page page2">
+          <PlayerCheck />
+        </div>
+        <div className="page page3">Coming soon ...</div>
       </div>
     </div>
   );

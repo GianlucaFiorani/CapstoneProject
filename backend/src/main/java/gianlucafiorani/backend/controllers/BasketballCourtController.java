@@ -40,7 +40,7 @@ public class BasketballCourtController {
             return basketballCourtService.save(newBasketballCourtDTO,currentUser);
         }
 
-        @PostMapping("{id}")
+        @PutMapping("{id}")
         @ResponseStatus(HttpStatus.CREATED)
         public BasketballCourt editCourt(@PathVariable UUID id,
                                          @AuthenticationPrincipal User currentUser,
