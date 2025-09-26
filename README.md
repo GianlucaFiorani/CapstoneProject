@@ -62,7 +62,7 @@ Le funzionalità e le tecnologie potrebbero variare nel corso della realizzazion
 
 ## 👨‍💻 Autore
 
-> Questo progetto è stato sviluppato con passione, creatività da [**Gianluca**] [**Fiorani**].
+> Questo progetto è stato sviluppato con passione, creatività da **Gianluca Fiorani**.
 
 ---
 
