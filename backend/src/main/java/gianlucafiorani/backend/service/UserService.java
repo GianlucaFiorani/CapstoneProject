@@ -10,10 +10,14 @@ import gianlucafiorani.backend.repositories.UsersRepository;
 import gianlucafiorani.backend.tools.JWTTools;
 import gianlucafiorani.backend.tools.MailgunSender;
 import io.jsonwebtoken.Claims;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -101,6 +105,22 @@ public class UserService {
     public void findByIdAndDelete(UUID userId) {
         User user = findById(userId);
         userRepository.delete(user);
+    }
+
+    @Scheduled(cron = "0 0 3 * * *")
+    @Transactional
+    public void deleteUnverifiedUsers() {
+        List<User> notVerify = userRepository.findByVerifiedIsFalse();
+        for (User user : notVerify) {
+            LocalDateTime createdAt = user.getCreatedAt();
+            LocalDateTime now = LocalDateTime.now();
+            long hours = Duration.between(createdAt, now).toHours();
+
+            if (hours >= 24) {
+                userRepository.delete(user);
+                mailgunSender.sendDeleteEmail(user);
+            }
+        }
     }
 
     //VERIFY

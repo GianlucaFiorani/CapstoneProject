@@ -37,6 +37,23 @@ public class MailgunSender {
         System.out.println(response.getBody());
     }
 
+
+    public void sendDeleteEmail(User recipient ) {
+        String htmlContent = "<html><body>"
+                + "<h1>Token scaduto!!</h1>"
+                + "<p>Non" + recipient.getName() + " hai completato la registrazione per tempo e il tuo account è stato eliminato.</p>"
+                + "</body></html>";
+
+        HttpResponse<JsonNode> response = Unirest.post("https://api.mailgun.net/v3/" + this.domain + "/messages")
+                .basicAuth("api", this.apiKey)
+                .queryString("from", "Balling <postmaster@" + this.domain + ">")
+                .queryString("to", recipient.getName() + " " + recipient.getSurname() + " <" + recipient.getEmail() + ">")
+                .queryString("subject", "Token scaduto!")
+                .queryString("html", htmlContent)
+                .asJson();
+        System.out.println(response.getBody());
+    }
+
     public void sendBillingEmail() {
     }
 }

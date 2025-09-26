@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Container, Alert, Spinner, Button, ButtonGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Map from "./Map";
+import bounce from "../../assets/img/bounce.gif";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
@@ -50,7 +51,16 @@ const Home = () => {
           color: "#f1f1f1",
         }}
       >
-        <Spinner className="mt-5" animation="border" variant="danger" />
+        <div className="d-flex justify-content-center" style={{ width: "100%", height: "100vh" }}>
+          <img
+            src={bounce}
+            alt="bounce"
+            style={{
+              width: "800px",
+              objectFit: "cover",
+            }}
+          />
+        </div>
       </Container>
     );
   }

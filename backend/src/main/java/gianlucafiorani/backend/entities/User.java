@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -46,6 +47,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     private Boolean verified;
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
     public User(String username, String email, String password, String name, String surname, String avatar) {
         this.username = username;
@@ -56,6 +59,7 @@ public class User implements UserDetails {
         this.avatar = avatar;
         this.role = Role.USER;
         this.verified = false;
+        this.createdAt= LocalDateTime.now();
     }
 
     @Override

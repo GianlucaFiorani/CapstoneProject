@@ -42,7 +42,7 @@ public class CheckInService {
 
     public List<CheckIn> checkInsByCourt(UUID courtId){
         BasketballCourt found = basketballCourtService.findById(courtId);
-        return checkInRepository.findByCourtAndTimeCheckOutIsNull(found);
+        return checkInRepository.findByCourtAndTimeCheckOutIsNullOrderByTimeCheckInDesc(found);
     }
 
     @Scheduled(fixedRate = 3600000)
@@ -55,7 +55,7 @@ public class CheckInService {
 
             long minutes = Duration.between(checkInTime, now).toMinutes();
 
-            if (minutes >= 240) {
+            if (minutes >= 300) {
                 createCheckOut(checkin.getUser());
             }
         }

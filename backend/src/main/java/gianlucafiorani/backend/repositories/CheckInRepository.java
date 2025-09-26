@@ -15,7 +15,7 @@ public interface CheckInRepository extends JpaRepository<CheckIn, UUID> {
 
     Optional<CheckIn> findByUserAndTimeCheckOutIsNull(User user);
 
-    List<CheckIn> findByCourtAndTimeCheckOutIsNull(BasketballCourt court);
+    List<CheckIn> findByCourtAndTimeCheckOutIsNullOrderByTimeCheckInDesc(BasketballCourt court);
 
     List<CheckIn> findByTimeCheckOutIsNull();
 
