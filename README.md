@@ -1,10 +1,80 @@
-# CapstoneProject
+# 🏀 Balli'
 
-Il mio progetto si basa su un'applicazione che traccia tutti i campetti da basket presenti nelle varie città. Dopo essersi registrati, gli utenti potranno visualizzare i campi vicini a loro oppure effettuare ricerche. Ogni utente avrà la possibilità di segnalare campetti non ancora presenti nella piattaforma.
-Sarà possibile indicare la propria presenza in un determinato campo, così che gli altri utenti possano sapere se il campo è affollato o se ci sono persone con cui giocare. Inoltre, sarà possibile organizzare eventi, come partite, tornei o sessioni di allenamento. Un utente, una volta creato un evento, assumerà il ruolo di organizzatore e avrà la possibilità di invitare altri giocatori e inserirli nelle varie squadre.
-All'interno dell'evento, oltre ai risultati delle partite, sarà presente una sezione statistiche, dove gli organizzatori potranno tracciare diverse metriche (punti, assist, rimbalzi, ecc...) per ogni giocatore in ogni partita. Sarà inoltre disponibile una funzione timer, che funzionerà come cronometro e segnapunti.
-Infine ogni utente potrà inviare richieste di amicizia ad altri, visualizzare le statistiche e la partecipazione agli eventi degli altri giocatori attraverso un sistema di ricerca.
+> _"Balli' — il basket di strada, organizzato."_
 
-L’applicazione verrà sviluppata in React per il frontend e Java Spring Boot + PostgreSQL per il backend.
+## 📌 Descrizione del Progetto
 
-Essendo un progetto in fase di sviluppo, le tecnologie utilizzate potrebbero variare se ritenuto opportuno. In caso di approvazione, anche questo README verrà aggiornato per illustrare in maniera più accurata ed esplicativa tutte le funzionalità e le varie fasi di sviluppo del progetto, comprese le tecnologie adottate.
+**Balli'** è un'applicazione web pensata per tutti gli appassionati di basket che vogliono **scoprire**, **vivere** e **organizzare** il gioco nei campetti delle città.  
+La piattaforma permette agli utenti di **localizzare i playground**, **segnalare nuovi campi**, **partecipare ad eventi**, **registrare statistiche**, e **connettersi con altri giocatori**.
+
+---
+
+## ✨ Funzionalità Principali
+
+- 📍 **Mappa dei campetti**: Visualizza i campi da basket disponibili vicino alla tua posizione o in qualsiasi città.
+- ➕ **Segnalazione nuovi campi**: Contribuisci alla crescita della community aggiungendo playground non ancora presenti.
+- 👥 **Presenze in tempo reale**: Indica la tua presenza su un campo e vedi se ci sono altri con cui giocare.
+- 🗓️ **Organizzazione eventi**: Crea partite, tornei o allenamenti. Invita altri utenti e assegnali alle squadre.
+- 📊 **Statistiche avanzate**: Traccia le performance dei giocatori (punti, assist, rimbalzi, ecc.) all'interno di ogni evento.
+- ⏱️ **Timer e segnapunti**: Gestisci il tempo e il punteggio delle partite in modo digitale.
+- 🤝 **Sistema di amicizie**: Aggiungi amici, visualizza le loro statistiche e la loro attività recente.
+- 🔎 **Ricerca utenti e campi**: Trova facilmente giocatori e playground grazie a un sistema di ricerca efficiente.
+
+---
+
+## 🧠 Tecnologie Utilizzate
+
+### 🖥️ Frontend
+
+- [React](https://reactjs.org/)
+- [React-Bootstrap](https://react-bootstrap.github.io/)
+- [React Router](https://reactrouter.com/)
+
+### 🌐 Backend
+
+- [Java Spring Boot](https://spring.io/projects/spring-boot)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Spring Security](https://spring.io/projects/spring-security) _(per autenticazione e autorizzazione)_
+
+---
+
+## 🚧 Stato del Progetto
+
+🔨 _Attualmente in fase di sviluppo attivo._  
+Le funzionalità e le tecnologie potrebbero variare nel corso della realizzazione, al fine di ottimizzare l'esperienza utente e le performance.
+
+➡️ Il presente README verrà aggiornato costantemente per riflettere:
+
+- Le fasi di sviluppo
+- Le nuove funzionalità implementate
+- Le modifiche strutturali e tecnologiche
+
+---
+
+## 🚀 Obiettivi Futuri
+
+- Implementazione API REST complete
+- Versione mobile responsive o app nativa
+- Sistema di notifiche in tempo reale (es. partite in zona)
+- Ranking e classifiche giocatori
+
+---
+
+## 👨‍💻 Autore
+
+> Questo progetto è stato sviluppato con passione, creatività da [**Gianluca**] [**Fiorani**].
+
+---
+
+## 📜 Licenza
+
+Questo progetto è attualmente ad uso personale e/o educativo.  
+Una licenza verrà definita in seguito alla pubblicazione ufficiale.
+
+---
+
+## 📬 Contatti
+
+Per collaborazioni, suggerimenti o feedback:
+
+- 📧 Email: [gianluca.fiorani97@email.it]
