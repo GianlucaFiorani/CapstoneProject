@@ -1,6 +1,6 @@
-# 🏀 Balli'
+# 🏀 Ballin'
 
-> _"Balli' — il basket di strada, organizzato."_
+> _"Ballin' — il basket di strada, organizzato."_
 
 ## 📌 Descrizione del Progetto
 
