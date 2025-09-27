@@ -50,8 +50,10 @@ const Map = ({ courts }) => {
 
   const handleSearch = () => {
     fetchGeocode();
-    const { lat, lon } = sugg[0];
-    setSearchPosition([parseFloat(lat), parseFloat(lon)]);
+    if (sugg.length > 0) {
+      const { lat, lon } = sugg[0];
+      setSearchPosition([parseFloat(lat), parseFloat(lon)]);
+    }
   };
 
   useEffect(() => {

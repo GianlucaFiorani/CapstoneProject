@@ -8,8 +8,10 @@ import gianlucafiorani.backend.exception.NotFoundException;
 import gianlucafiorani.backend.payload.BasketballCourtRespDTO;
 import gianlucafiorani.backend.payload.NewBasketballCourtDTO;
 import gianlucafiorani.backend.repositories.BasketballCourtRepository;
+import gianlucafiorani.backend.repositories.CheckInRepository;
 import gianlucafiorani.backend.repositories.ReviewRepository;
 import gianlucafiorani.backend.tools.OsmFetcher;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,8 @@ public class BasketballCourtService {
     private UserService userService;
     @Autowired
     private ReviewRepository reviewRepository;
+    @Autowired
+    private CheckInRepository checkInRepository;
 
     String italy="35.0,6.0,47.0,18.0";
 
@@ -84,7 +88,8 @@ public class BasketballCourtService {
                    court.getLat(),
                    court.getLon(),
                     Math.round(safeAvg* 2) / 2.0,
-                    reviewRepository.countByCourt(court)
+                    reviewRepository.countByCourt(court),
+                    court.getCreatedBy()
             );
             respDtoList.add(respDTO);
         }
@@ -101,13 +106,14 @@ public class BasketballCourtService {
                     found.getLat(),
                     found.getLon(),
                    Math.round(safeAvg* 2) / 2.0,
-                    reviewRepository.countByCourt(found)
+                    reviewRepository.countByCourt(found),
+                   found.getCreatedBy()
             );
     }
 
     public BasketballCourt findByIdAndUpdate(UUID courtId, User currentUser, NewBasketballCourtDTO payload) {
         BasketballCourt found = this.findById(courtId);
-        if (found.getCreatedBy() == currentUser || currentUser.getRole() == Role.ADMIN){
+        if (found.getCreatedBy().getId().equals(currentUser.getId()) || currentUser.getRole() == Role.ADMIN){
             found.setName(payload.name());
             found.setLon(payload.lon());
             found.setLat(payload.lat());
@@ -117,9 +123,12 @@ public class BasketballCourtService {
         }
     }
 
+    @Transactional
    public void delete(UUID courtId,User currentUser){
         BasketballCourt court = findById(courtId);
-        if (court.getCreatedBy() == currentUser || currentUser.getRole() == Role.ADMIN){
+        if (court.getCreatedBy().getId().equals(currentUser.getId()) || currentUser.getRole() == Role.ADMIN){
+            checkInRepository.deleteByCourtId(courtId);
+            reviewRepository.deleteByCourtId(courtId);
             basketballCourtRepository.delete(court);
         } else {
             throw new BadRequestException("You cannot delete a court you didn't add");

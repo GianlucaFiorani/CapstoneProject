@@ -19,4 +19,6 @@ public interface ReviewRepository extends JpaRepository<Review, UUID> {
     Integer countByCourt(BasketballCourt court);
 
     List<Review> findByCourtOrderByDateDesc(BasketballCourt court);
+
+    void deleteByCourtId(UUID courtId);
 }

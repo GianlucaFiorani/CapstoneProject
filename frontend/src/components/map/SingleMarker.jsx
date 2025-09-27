@@ -110,20 +110,22 @@ const SingleMarker = ({ court, go }) => {
             {court.name || "Basketball Court"}
           </Link>
           <h2 className="d-flex mt-3 ">
-            <span className="fs-6 me-2">{court.ratingAv + "/5"}</span>
+            <span className="fs-6 me-2">{(court.ratingAv ? court.ratingAv : 0) + "/5"}</span>
             <div>
-              <PrintRating ratingAv={court.ratingAv} size={"20px"} translate={"-12px"} />
+              <PrintRating ratingAv={court.ratingAv ? court.ratingAv : 0} size={"20px"} translate={"-12px"} color2={"#98908dff"} />
             </div>
-            <span className="fs-6 text-secondary">{"(" + court.reviewCount + ")"}</span>
+            <span className="fs-6 text-secondary">{"(" + (court.reviewCount ? court.reviewCount : 0) + ")"}</span>
           </h2>
-          <Button
-            className="border-c2 border-3 fw-bold"
-            style={{ background: "#ffb114", color: "#795548 " }}
-            onClick={() => (isPresent ? checkOut(court.id) : checkIn(court.id))}
-          >
-            {isPresent ? "checkout" : "checkin"}
-          </Button>
-          <span className="ms-5 fw-bold fs-2">{players.length}</span>
+          <div className="d-flex">
+            <Button
+              className="border-c2 border-3 fw-bold"
+              style={{ background: "#ffb114", color: "#795548 " }}
+              onClick={() => (isPresent ? checkOut(court.id) : checkIn(court.id))}
+            >
+              {isPresent ? "checkout" : "checkin"}
+            </Button>
+            <span className="ms-auto me-3 fw-bold fs-2">{players.length}</span>
+          </div>
         </div>
       </Popup>
     </Marker>

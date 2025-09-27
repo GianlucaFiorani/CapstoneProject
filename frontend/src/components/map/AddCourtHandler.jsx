@@ -80,6 +80,8 @@ const AddCourtHandler = ({ go }) => {
                     <div className="d-flex align-items-center">
                       <Form className="d-flex" onSubmit={handleSubmit}>
                         <Form.Control
+                          className="border-0 shadow border-c2 p-2 "
+                          style={{ background: "#ffffff45" }}
                           type="text"
                           placeholder={`Inserisci nome`}
                           onChange={(e) => {

@@ -1,6 +1,8 @@
 package gianlucafiorani.backend.payload;
 
 
+import gianlucafiorani.backend.entities.User;
+
 import java.util.UUID;
 
 public record BasketballCourtRespDTO(
@@ -9,6 +11,7 @@ public record BasketballCourtRespDTO(
         double lat,
         double lon,
         double ratingAv,
-        int reviewCount
+        int reviewCount,
+        User createBy
 ) {
 }

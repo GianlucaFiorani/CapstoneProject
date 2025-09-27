@@ -1,7 +1,7 @@
 import Ball from "../../svg/Ball";
 import Halfball from "../../svg/Halfball";
 
-const PrintRating = ({ ratingAv, size, translate }) => {
+const PrintRating = ({ ratingAv, size, translate, color1, color2 }) => {
   const arrayValue = ratingAv % 1 == 0 ? ratingAv : ratingAv - 0.5;
   return (
     <div className="position-relative" style={{ width: `calc(${size} * 5)`, height: size }}>
@@ -15,7 +15,7 @@ const PrintRating = ({ ratingAv, size, translate }) => {
                 transform: `translateY(${translate})`,
                 height: size,
                 width: size,
-                fill: "#f4e7e7ff",
+                fill: color2 ? color2 : "#f4e7e7ff",
               }}
             >
               <Ball />
@@ -33,7 +33,7 @@ const PrintRating = ({ ratingAv, size, translate }) => {
                 transform: `translateY(${translate})`,
                 height: size,
                 width: size,
-                fill: "#795548",
+                fill: color1 ? colr1 : "#795548",
               }}
             >
               <Ball />

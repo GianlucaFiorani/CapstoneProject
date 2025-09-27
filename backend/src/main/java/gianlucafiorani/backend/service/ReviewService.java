@@ -54,7 +54,7 @@ public class ReviewService {
     public void delete(UUID reviewId,User user){
         Review found = findById(reviewId);
 
-        if (found.getUser() == user || user.getRole() == Role.ADMIN) {
+        if (found.getUser().getId().equals(user.getId()) || user.getRole() == Role.ADMIN) {
             reviewRepository.delete(found);
         } else {
             throw new BadRequestException("You cannot delete a review you didn't add");
