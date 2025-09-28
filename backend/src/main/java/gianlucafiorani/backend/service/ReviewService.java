@@ -7,6 +7,7 @@ import gianlucafiorani.backend.entities.User;
 import gianlucafiorani.backend.exception.BadRequestException;
 import gianlucafiorani.backend.exception.NotFoundException;
 import gianlucafiorani.backend.payload.NewReviewDTO;
+import gianlucafiorani.backend.repositories.ReportRepository;
 import gianlucafiorani.backend.repositories.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public class ReviewService {
     private ReviewRepository reviewRepository;
     @Autowired
     private BasketballCourtService basketballCourtService;
+    @Autowired
+    private ReportRepository reportRepository;
 
     public Review save(NewReviewDTO dto, User user){
         BasketballCourt found = basketballCourtService.findById(dto.courtId());
@@ -55,16 +58,17 @@ public class ReviewService {
         Review found = findById(reviewId);
 
         if (found.getUser().getId().equals(user.getId()) || user.getRole() == Role.ADMIN) {
+            reportRepository.deleteByReviewId(reviewId);
             reviewRepository.delete(found);
         } else {
             throw new BadRequestException("You cannot delete a review you didn't add");
         }
     }
 
-public List<Review> findByCourt(UUID id){
-        BasketballCourt found = basketballCourtService.findById(id);
-       return reviewRepository.findByCourtOrderByDateDesc(found);
-}
+    public List<Review> findByCourt(UUID id){
+            BasketballCourt found = basketballCourtService.findById(id);
+           return reviewRepository.findByCourtOrderByDateDesc(found);
+    }
 
 
 }

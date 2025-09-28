@@ -8,6 +8,7 @@ import PlayerCheck from "./players/PlayerCheck";
 import bounce from "../../assets/img/bounce.gif";
 import { jwtDecode } from "jwt-decode";
 import { BsThreeDots } from "react-icons/bs";
+import ReportModal from "./ReportModal";
 
 const CourtDetails = () => {
   const params = useParams();
@@ -15,6 +16,7 @@ const CourtDetails = () => {
   const [error, setError] = useState("");
   const [court, setCourt] = useState();
   const [showModal, setShowModal] = useState(false);
+  const [showReport, setShowReport] = useState(false);
   const [toDeleteOrEdit, setToDeleteOrEdit] = useState(null);
   const [openEdit, setOpenEdit] = useState(false);
   const [newName, setNewName] = useState("");
@@ -157,6 +159,8 @@ const CourtDetails = () => {
         position: "fixed",
       }}
     >
+      <ReportModal showModal={showReport} setShowModal={setShowReport} />
+
       <Modal
         show={openEdit}
         onHide={() => {
@@ -230,6 +234,7 @@ const CourtDetails = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
       <div className="p-3  shadow">
         <Dropdown className="position-absolute border-0 top-0 end-0 me-3 p-0">
           <Dropdown.Toggle className="fs-4 border-0 p-0 mb-5" variant="none" id="dropdown-basic">
@@ -237,7 +242,13 @@ const CourtDetails = () => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu className="shadow" style={{ background: "antiquewhite", zIndex: "9999" }}>
-            <Dropdown.Item href="#/action-1">Segnala</Dropdown.Item>
+            <Dropdown.Item
+              onClick={() => {
+                setShowReport(true);
+              }}
+            >
+              Segnala
+            </Dropdown.Item>
             {(court.createBy.id == decoded.sub || decoded.role == "ADMIN") && (
               <>
                 <Dropdown.Item

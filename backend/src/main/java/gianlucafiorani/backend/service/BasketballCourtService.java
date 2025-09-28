@@ -9,6 +9,7 @@ import gianlucafiorani.backend.payload.BasketballCourtRespDTO;
 import gianlucafiorani.backend.payload.NewBasketballCourtDTO;
 import gianlucafiorani.backend.repositories.BasketballCourtRepository;
 import gianlucafiorani.backend.repositories.CheckInRepository;
+import gianlucafiorani.backend.repositories.ReportRepository;
 import gianlucafiorani.backend.repositories.ReviewRepository;
 import gianlucafiorani.backend.tools.OsmFetcher;
 import jakarta.transaction.Transactional;
@@ -33,6 +34,8 @@ public class BasketballCourtService {
     private ReviewRepository reviewRepository;
     @Autowired
     private CheckInRepository checkInRepository;
+    @Autowired
+    private ReportRepository reportRepository;
 
     String italy="35.0,6.0,47.0,18.0";
 
@@ -129,6 +132,7 @@ public class BasketballCourtService {
         if (court.getCreatedBy().getId().equals(currentUser.getId()) || currentUser.getRole() == Role.ADMIN){
             checkInRepository.deleteByCourtId(courtId);
             reviewRepository.deleteByCourtId(courtId);
+            reportRepository.deleteByCourtId(courtId);
             basketballCourtRepository.delete(court);
         } else {
             throw new BadRequestException("You cannot delete a court you didn't add");

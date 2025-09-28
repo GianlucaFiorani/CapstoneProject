@@ -2,6 +2,7 @@ package gianlucafiorani.backend.runner;
 
 import gianlucafiorani.backend.entities.Role;
 import gianlucafiorani.backend.entities.User;
+import gianlucafiorani.backend.repositories.BasketballCourtRepository;
 import gianlucafiorani.backend.repositories.UsersRepository;
 import gianlucafiorani.backend.service.BasketballCourtService;
 import gianlucafiorani.backend.service.UserService;
@@ -23,13 +24,13 @@ public class FirstStartRunner implements CommandLineRunner {
     @Value("${admin_password}")
     String adPassword;
     @Autowired
-    private OsmFetcher osmFetcher;
+    private UserService userService;
     @Autowired
     private UsersRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private NominatimGeocode nominatimGeocode;
+    private BasketballCourtRepository basketballCourtRepository;
     @Autowired
     private BasketballCourtService basketballCourtService;
 
@@ -58,8 +59,10 @@ public class FirstStartRunner implements CommandLineRunner {
                 "64.5, -5.0, 71.0, 5.0"      // Scandinavia
         );
 
-        for (String area : europeTiles) {
-            //basketballCourtService.fetchAndSave(area, userService.findByUsername("Admin"));
+        if (basketballCourtRepository.count() == 0) {
+            for (String area : europeTiles) {
+                basketballCourtService.fetchAndSave(area, userService.findByUsername("Admin"));
+            }
         }
     }
 

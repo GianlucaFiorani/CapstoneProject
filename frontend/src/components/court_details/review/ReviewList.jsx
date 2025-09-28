@@ -8,6 +8,7 @@ import { it } from "date-fns/locale";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { fetchReviewAction, reviewAction } from "../../../redux/action";
+import ReportModal from "../ReportModal";
 
 const RviewList = ({ reviews, setLoading, setOpenEdit }) => {
   const params = useParams();
@@ -17,6 +18,7 @@ const RviewList = ({ reviews, setLoading, setOpenEdit }) => {
   const [show, setShow] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [toDelete, setToDelete] = useState(null);
+  const [showReport, setShowReport] = useState(false);
   const token = localStorage.getItem("token");
   const decoded = jwtDecode(token);
 
@@ -46,6 +48,8 @@ const RviewList = ({ reviews, setLoading, setOpenEdit }) => {
 
   return (
     <>
+      <ReportModal showModal={showReport} setShowModal={setShowReport} reviewId={toDelete} />
+
       <Modal
         show={showModal}
         onHide={() => {
@@ -88,7 +92,14 @@ const RviewList = ({ reviews, setLoading, setOpenEdit }) => {
               </Dropdown.Toggle>
 
               <Dropdown.Menu className="shadow" style={{ background: "antiquewhite" }}>
-                <Dropdown.Item href="#/action-1">Segnala</Dropdown.Item>
+                <Dropdown.Item
+                  onClick={() => {
+                    setToDelete(review.id);
+                    setShowReport(true);
+                  }}
+                >
+                  Segnala
+                </Dropdown.Item>
                 {(review.user.id == decoded.sub || decoded.role == "ADMIN") && (
                   <>
                     <Dropdown.Item
