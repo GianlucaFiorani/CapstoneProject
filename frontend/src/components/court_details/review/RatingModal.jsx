@@ -69,13 +69,13 @@ const RatingModal = ({ openEdit, setOpenEdit, setLoading }) => {
       setIsLoading(false);
       setShowModal(false);
       setOpenEdit(false);
+      setComment("");
+      setRating(null);
     }
   };
 
   const handleSubmit = () => {
     createOrEditReview();
-    setComment("");
-    setRating(null);
   };
 
   return (

@@ -5,8 +5,11 @@ import marker from "../../assets/img/marker.png";
 import { Button, Form, Spinner } from "react-bootstrap";
 import SingleMarker from "./SingleMarker";
 import { data } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { fetchCourtsAction } from "../../redux/action";
 
 const AddCourtHandler = ({ go }) => {
+  const dispatch = useDispatch();
   const [clickedPosition, setClickedPosition] = useState(null);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
@@ -50,6 +53,7 @@ const AddCourtHandler = ({ go }) => {
 
         const data = await response.json();
         newCourt.push(data);
+        dispatch(fetchCourtsAction(token, setError));
       } catch (err) {
         setError(err.message);
       } finally {

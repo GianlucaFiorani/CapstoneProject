@@ -106,8 +106,8 @@ const SingleMarker = ({ court, go }) => {
         }}
       >
         <div style={{ width: "300px" }}>
-          <Link to={"/court-details/" + court.id} className="fs-3 text-decoration-none fs-semibold text-black alfa-slab-one-regular fascinate-regular mb-3">
-            {court.name || "Basketball Court"}
+          <Link to={"/court-details/" + court.id} className="fs-3 text-decoration-none fs-semibold text-black fascinate-regular mb-3">
+            <div className="pop"> {court.name || "Basketball Court"}</div>
           </Link>
           <h2 className="d-flex mt-3 ">
             <span className="fs-6 me-2">{(court.ratingAv ? court.ratingAv : 0) + "/5"}</span>

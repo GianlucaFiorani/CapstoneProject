@@ -32,13 +32,13 @@ const ReportModal = ({ showModal, setShowModal, reviewId }) => {
     } finally {
       setIsLoading(false);
       setShowModal(false);
+      setMessage("");
     }
   };
 
   const handleSubmit = () => {
     if (message) {
       createReport();
-      setMessage("");
     }
   };
 

@@ -11,8 +11,11 @@ import { useRef } from "react";
 import MapController from "./MapController";
 import ZoomController from "./ZoomController";
 import SingleMarker from "./SingleMarker";
+import { useDispatch, useSelector } from "react-redux";
+import { searchAction } from "../../redux/action";
 
 const Map = ({ courts }) => {
+  const dispatch = useDispatch();
   const inputRef = useRef(null);
   const [searchLocation, setSearchLocation] = useState("");
   const [userPosition, setUserPosition] = useState(null);
@@ -20,7 +23,10 @@ const Map = ({ courts }) => {
   const [addCourt, setAddCourt] = useState(false);
   const [sugg, setSugg] = useState([]);
   const [zoomLevel, setZoomLevel] = useState(13);
+  const [bounds, setBounds] = useState(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const saveLat = useSelector((state) => state.search.lat);
+  const saveLon = useSelector((state) => state.search.lon);
   const center = userPosition ? userPosition : [45.4642, 9.19];
 
   const customIcon = new L.Icon({
@@ -57,6 +63,7 @@ const Map = ({ courts }) => {
   };
 
   useEffect(() => {
+    saveLat && saveLon && setSearchPosition([saveLat, saveLon]);
     if ("geolocation" in navigator) {
       const watchId = navigator.geolocation.watchPosition(
         (position) => {
@@ -74,10 +81,12 @@ const Map = ({ courts }) => {
       );
 
       return () => navigator.geolocation.clearWatch(watchId);
-    } else {
-      alert("Geolocalizzazione non supportata dal tuo browser");
     }
   }, []);
+
+  useEffect(() => {
+    searchPosition && dispatch(searchAction(searchPosition[0], searchPosition[1]));
+  }, [searchPosition]);
 
   return (
     <>
@@ -162,9 +171,12 @@ const Map = ({ courts }) => {
         )}
         <TileLayer attribution="&copy; OpenStreetMap contributors" url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
         <MapController position={searchPosition || userPosition} />
-        <ZoomController onZoomChange={setZoomLevel} />
+        <ZoomController onZoomChange={setZoomLevel} onBoundsChange={setBounds} />
         {addCourt && <AddCourtHandler go={setSearchPosition} />}
-        {zoomLevel >= 12 && courts.map((court) => <SingleMarker key={court.id} court={court} go={setSearchPosition} />)}
+        {zoomLevel >= 12 &&
+          courts
+            .filter((court) => bounds && bounds.contains([court.lat, court.lon]))
+            .map((court) => <SingleMarker key={court.id} court={court} go={setSearchPosition} />)}
 
         {userPosition && <Marker position={userPosition} icon={customIcon}></Marker>}
       </MapContainer>

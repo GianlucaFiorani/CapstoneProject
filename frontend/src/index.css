@@ -35,6 +35,14 @@
   border-width: 10px !important;
 }
 
+.pop {
+  transition: transform 0.3s ease-in-out;
+}
+
+.pop:hover {
+  transform: scale(1.08) !important;
+}
+
 .leaflet-popup-tip-container {
   display: none !important;
 }

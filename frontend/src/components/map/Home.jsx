@@ -3,12 +3,14 @@ import { Container, Alert, Spinner, Button, ButtonGroup } from "react-bootstrap"
 import { useNavigate } from "react-router-dom";
 import Map from "./Map";
 import bounce from "../../assets/img/bounce.gif";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCourtsAction } from "../../redux/action";
 
 const Home = () => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [courts, setCourts] = useState([]);
-
+  const courts = useSelector((state) => state.courts.data);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,24 +21,7 @@ const Home = () => {
       setLoading(false);
       return;
     } else {
-      fetch("http://localhost:3001/courts", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
-        .then((res) => {
-          if (!res.ok) throw new Error("Errore caricamento");
-          return res.json();
-        })
-        .then((data) => {
-          setCourts(data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          setError(err.message);
-          setLoading(false);
-        });
+      courts.length == 0 ? dispatch(fetchCourtsAction(token, setLoading, setError)) : setLoading(false);
     }
   }, []);
 

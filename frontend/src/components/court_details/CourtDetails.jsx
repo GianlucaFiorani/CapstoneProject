@@ -9,9 +9,12 @@ import bounce from "../../assets/img/bounce.gif";
 import { jwtDecode } from "jwt-decode";
 import { BsThreeDots } from "react-icons/bs";
 import ReportModal from "./ReportModal";
+import { useDispatch } from "react-redux";
+import { fetchCourtsAction, searchAction } from "../../redux/action";
 
 const CourtDetails = () => {
   const params = useParams();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [court, setCourt] = useState();
@@ -64,6 +67,8 @@ const CourtDetails = () => {
       });
 
       if (response.ok) {
+        dispatch(searchAction(null, null));
+        dispatch(fetchCourtsAction(token, setError));
         navigate("/");
       } else {
         throw new Error("Errore nel eliminazione del campo");
