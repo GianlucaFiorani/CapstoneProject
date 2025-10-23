@@ -48,6 +48,7 @@ export const fetchCourtsAction = (token, loading, error) => {
       if (resp.ok) {
         const data = await resp.json();
         dispatch({ type: SET_COURTS, payload: data });
+        return data;
       }
     } catch (error) {
       error(error.message);
@@ -56,3 +57,8 @@ export const fetchCourtsAction = (token, loading, error) => {
     }
   };
 };
+
+export const resetCourtsAction = () => ({
+  type: SET_COURTS,
+  payload: [],
+});

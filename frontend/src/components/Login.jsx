@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Form, Button, Container, Row, Col, Card, Alert } from "react-bootstrap";
+import { Form, Button, Container, Row, Col, Card } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/img/logoBg.jpg";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
+import { BiXCircle } from "react-icons/bi";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -10,16 +11,19 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setSuccess("");
     setLoading(true);
-
     try {
+      const res = await fetch("http://localhost:3001/auth/" + identifier);
+      if (!res.ok) throw new Error("Errore nel controllo utente");
+      const existData = await res.json();
+      if (!existData) {
+        throw new Error("notExist");
+      }
       const response = await fetch("http://localhost:3001/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -27,13 +31,12 @@ const Login = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Credenziali errate o errore di connessione");
+        throw new Error("errPsw");
       }
 
       const data = await response.json();
       console.log("Risposta login:", data);
       localStorage.setItem("token", data.accessToken);
-      setSuccess("Login effettuato con successo!");
       navigate("/");
     } catch (err) {
       setError(err.message);
@@ -60,13 +63,11 @@ const Login = () => {
                 <div className="d-flex align-items-center justify-content-center">
                   <img src={logo} alt="logo" className="shadow-lg " style={{ borderRadius: "100%", filter: "brightness(1.2)", width: "500px" }} />
                 </div>
-                {error && <Alert variant="danger">{error}</Alert>}
-                {success && <Alert variant="success">{success}</Alert>}
 
                 <Form onSubmit={handleSubmit}>
-                  <Form.Group className="my-4">
+                  <Form.Group className="mt-4">
                     <Form.Control
-                      className="border-0 shadow border-c2 p-2 mt-3"
+                      className={error == "notExist" ? "border-2  border-danger shadow shake p-2 mt-3" : "border-0 shadow border-c2 p-2 mt-3 mb-3"}
                       style={{ background: "#ffffff45" }}
                       placeholder="Inserisci la tua e-mail o username"
                       value={identifier}
@@ -74,10 +75,16 @@ const Login = () => {
                       required
                     />
                   </Form.Group>
+                  {error == "notExist" && (
+                    <p className="text-danger my-1 d-flex align-items-center">
+                      <BiXCircle />
+                      Account inesistente
+                    </p>
+                  )}
 
-                  <Form.Group className="mb-4 position-relative">
+                  <Form.Group className="position-relative">
                     <Form.Control
-                      className="border-0 shadow border-c2 p-2 "
+                      className={error == "errPsw" ? "border-2  border-danger shadow shake p-2 mt-3" : "border-0 shadow border-c2 p-2 mt-3 mb-4"}
                       style={{ background: "#ffffff45" }}
                       type={showPassword ? "text" : "password"}
                       placeholder={"Inserisci la password"}
@@ -94,6 +101,13 @@ const Login = () => {
                       {showPassword ? <BsEye /> : <BsEyeSlash />}
                     </Button>
                   </Form.Group>
+                  {error == "errPsw" && (
+                    <span className="text-danger d-flex align-items-center my-2">
+                      <BiXCircle />
+                      Password errata
+                      <Link className="text-secondary ms-2"> dimenticata?</Link>
+                    </span>
+                  )}
 
                   <div className="d-grid mb-3">
                     <Button

@@ -5,8 +5,9 @@ import { formatDistanceToNow } from "date-fns";
 import { it } from "date-fns/locale";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
+import "./PlayerCheck.css";
 
-const PlayerCheck = () => {
+const PlayerCheck = ({ isPresent }) => {
   const params = useParams();
   const dispatch = useDispatch();
   const [loadin, setLoading] = useState(false);
@@ -58,7 +59,7 @@ const PlayerCheck = () => {
 
   useEffect(() => {
     fetchPlayers();
-  }, []);
+  }, [isPresent]);
 
   return (
     <>
@@ -72,27 +73,18 @@ const PlayerCheck = () => {
             {players.map((player) => (
               <ListGroup.Item
                 key={player.id}
-                className="d-flex flex-column shadow border-6 border-start-0 border-end-0 p-5 my-4"
-                style={{ backgroundColor: "#f6f5f529", width: "450px", borderColor: timeDiff(player.timeCheckIn) }}
+                className="d-flex flex-column shadow border-6 border-start-0 check-card border-end-0 p-5 my-4"
+                style={{ backgroundColor: "#f6f5f529", borderColor: timeDiff(player.timeCheckIn) }}
               >
                 <div className="d-flex gap-2 align-items-center mb-2" style={{ marginLeft: "-122px" }}>
-                  <img
-                    src={player.user.avatar}
-                    alt="avatar"
-                    style={{
-                      width: "150px",
-                      height: "150px",
-                      borderRadius: "50%",
-                      objectFit: "cover",
-                    }}
-                  />
+                  <img src={player.user.avatar} alt="avatar" className="avatar-img" />
                   <div style={{ width: "100%" }}>
                     <div className="d-flex flex-column">
-                      <span className="fw-semibold fs-3">
+                      <span className="fw-semibold check-name">
                         {player.user.name} {player.user.surname}
                       </span>
-                      <span className="fs-6 fw-semibold ms-1 mt-0">@{player.user.username}</span>
-                      <div className="fs-5">
+                      <span className="check-username fw-semibold ms-1 mt-0">@{player.user.username}</span>
+                      <div className="check-name">
                         <span className="me-1"> Ha fatto checkIn</span>
                         {formatDistanceToNow(new Date(player.timeCheckIn), {
                           addSuffix: true,

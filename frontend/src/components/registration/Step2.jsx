@@ -36,7 +36,7 @@ const Step2 = ({ nextStep, handleChange, values }) => {
           </Form.Label>
           <Form.Control
             style={{ background: "#ffffff45" }}
-            className={hasSubmit ? "border-danger shadow  p-2 mt-3" : "border-0 shadow border-c2 p-2 mt-3"}
+            className={hasSubmit ? "shake shadow  p-2 mt-3" : "border-0 shadow border-c2 p-2 mt-3"}
             type={showPassword ? "text" : "password"}
             name="password"
             value={values.password}

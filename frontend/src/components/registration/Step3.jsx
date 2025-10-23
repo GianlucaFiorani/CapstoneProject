@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { isValidEmail } from "../../utils/isValidEmail";
 import { isValidPassword } from "../../utils/isValidPassword";
 
-const Step3 = ({ formData, nextStep, handleChange, values }) => {
+const Step3 = ({ nextStep, handleChange, values }) => {
   const [exist, setExist] = useState(false);
   const navigate = useNavigate();
 
@@ -26,7 +26,7 @@ const Step3 = ({ formData, nextStep, handleChange, values }) => {
             : fetch("http://localhost:3001/auth/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(values),
               })
                 .then((res) => res.json())
                 .then((data) => console.log(data), nextStep())

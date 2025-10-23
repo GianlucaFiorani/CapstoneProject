@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Dropdown, ListGroup, Modal } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { BsThreeDots } from "react-icons/bs";
 import PrintRating from "./PrintRating";
 import { formatDistanceToNow } from "date-fns";
@@ -21,6 +21,7 @@ const RviewList = ({ reviews, setLoading, setOpenEdit }) => {
   const [showReport, setShowReport] = useState(false);
   const token = localStorage.getItem("token");
   const decoded = jwtDecode(token);
+  const navigate = useNavigate();
 
   const deleteReview = async () => {
     try {
@@ -124,16 +125,18 @@ const RviewList = ({ reviews, setLoading, setOpenEdit }) => {
             </Dropdown>
 
             <div className="d-flex gap-2 align-items-center mb-2">
-              <img
-                src={review.user.avatar}
-                alt="avatar"
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
-                  objectFit: "cover",
-                }}
-              />
+              <Link to={review.user.id == decoded.sub ? "/profile-details/me" : "/profile-details/" + review.user.id}>
+                <img
+                  src={review.user.avatar}
+                  alt="avatar"
+                  style={{
+                    width: "40px",
+                    height: "40px",
+                    borderRadius: "50%",
+                    objectFit: "cover",
+                  }}
+                />
+              </Link>
               <div style={{ width: "100%" }}>
                 <div className="d-flex flex-wrap justify-content-between">
                   <div className="d-flex">

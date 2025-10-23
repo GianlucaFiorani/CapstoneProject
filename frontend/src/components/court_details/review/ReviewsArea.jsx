@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchReviewAction } from "../../../redux/action";
 import "./Review.css";
 
-const ReviewsArea = () => {
+const ReviewsArea = ({ fetchCourt }) => {
   const params = useParams();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -22,6 +22,7 @@ const ReviewsArea = () => {
   }, []);
 
   useEffect(() => {
+    fetchCourt();
     if (!loading) {
       reviews.length == 0 ? setEmpty(true) : setEmpty(false);
     }

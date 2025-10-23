@@ -1,0 +1,36 @@
+.check-card {
+  width: 250px;
+}
+.avatar-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: 15px;
+}
+
+.check-name {
+  font-size: 0.9rem;
+}
+
+.check-username {
+  font-size: 0.5rem;
+}
+@media (min-width: 768px) {
+  .avatar-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .check-card {
+    width: 450px;
+  }
+  .check-name {
+    font-size: 1.2rem;
+  }
+
+  .check-username {
+    font-size: 0.9rem;
+  }
+}

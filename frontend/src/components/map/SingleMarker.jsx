@@ -5,8 +5,11 @@ import { Link } from "react-router-dom";
 import marker from "../../assets/img/marker.png";
 import { jwtDecode } from "jwt-decode";
 import PrintRating from "../court_details/review/PrintRating";
+import { useDispatch } from "react-redux";
+import { BsPeopleFill } from "react-icons/bs";
 
 const SingleMarker = ({ court, go }) => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isPresent, setIsPresent] = useState(false);
@@ -47,7 +50,6 @@ const SingleMarker = ({ court, go }) => {
   };
 
   const checkIn = (courtId) => {
-    const token = localStorage.getItem("token");
     fetch("http://localhost:3001/checkins/" + courtId, {
       method: "POST",
       headers: {
@@ -70,7 +72,6 @@ const SingleMarker = ({ court, go }) => {
   };
 
   const checkOut = async (courtId) => {
-    const token = localStorage.getItem("token");
     try {
       const response = await fetch("http://localhost:3001/checkins/checkout", {
         method: "PUT",
@@ -110,11 +111,14 @@ const SingleMarker = ({ court, go }) => {
             <div className="pop"> {court.name || "Basketball Court"}</div>
           </Link>
           <h2 className="d-flex mt-3 ">
-            <span className="fs-6 me-2">{(court.ratingAv ? court.ratingAv : 0) + "/5"}</span>
-            <div>
+            <div className="d-flex">
+              <span className="fs-5">{court.ratingAv ? court.ratingAv : 0}</span>
+              <span className="fs-6 me-2">/5</span>
+            </div>
+            <div className="align-items-center">
               <PrintRating ratingAv={court.ratingAv ? court.ratingAv : 0} size={"20px"} translate={"-12px"} color2={"#98908dff"} />
             </div>
-            <span className="fs-6 text-secondary">{"(" + (court.reviewCount ? court.reviewCount : 0) + ")"}</span>
+            <span className="fs-6 text-secondary ms-2">{"(" + (court.reviewCount ? court.reviewCount : 0) + ")"}</span>
           </h2>
           <div className="d-flex">
             <Button
@@ -124,7 +128,10 @@ const SingleMarker = ({ court, go }) => {
             >
               {isPresent ? "checkout" : "checkin"}
             </Button>
-            <span className="ms-auto me-3 fw-bold fs-2">{players.length}</span>
+            <span className="ms-auto me-3 fw-bold fs-2">
+              <BsPeopleFill />
+              {players.length}
+            </span>
           </div>
         </div>
       </Popup>

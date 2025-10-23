@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Dropdown, Form } from "react-bootstrap";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 
 import me from "../../assets/img/me.png";
 import AddCourtHandler from "./AddCourtHandler";
-import { BsCrosshair } from "react-icons/bs";
+import { BsCrosshair, BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
 import Autocomplete from "./Autocomplete";
 import AddCourt from "../svg/AddCourt";
 import { useRef } from "react";
@@ -13,6 +13,7 @@ import ZoomController from "./ZoomController";
 import SingleMarker from "./SingleMarker";
 import { useDispatch, useSelector } from "react-redux";
 import { searchAction } from "../../redux/action";
+import { useNavigate } from "react-router-dom";
 
 const Map = ({ courts }) => {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const Map = ({ courts }) => {
   const [sugg, setSugg] = useState([]);
   const [zoomLevel, setZoomLevel] = useState(13);
   const [bounds, setBounds] = useState(null);
+  const navigate = useNavigate();
   const [showSuggestions, setShowSuggestions] = useState(false);
   const saveLat = useSelector((state) => state.search.lat);
   const saveLon = useSelector((state) => state.search.lon);
@@ -88,8 +90,30 @@ const Map = ({ courts }) => {
     searchPosition && dispatch(searchAction(searchPosition[0], searchPosition[1]));
   }, [searchPosition]);
 
+  const handleProfileClick = () => {
+    navigate("/profile-details/me");
+  };
+
+  const handleLogoutClick = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
   return (
     <>
+      <Dropdown className="position-absolute border-0 z-1000 top-0 end-0 me-4 mt-2 p-0">
+        <Dropdown.Toggle className="fs-4 border-0 p-0 mb-5" variant="none" id="dropdown-basic">
+          <BsThreeDotsVertical />
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu className="shadow" style={{ background: "antiquewhite" }}>
+          {
+            <>
+              <Dropdown.Item onClick={handleProfileClick}>Profilo</Dropdown.Item>
+              <Dropdown.Item onClick={handleLogoutClick}>Logout</Dropdown.Item>
+            </>
+          }
+        </Dropdown.Menu>
+      </Dropdown>
       <Button
         onClick={() => {
           setAddCourt(!addCourt);

@@ -26,7 +26,7 @@ const Register = () => {
     case 2:
       return <Step2 nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} values={formData} />;
     case 3:
-      return <Step3 formData={formData} nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} values={formData} />;
+      return <Step3 nextStep={nextStep} prevStep={prevStep} handleChange={handleChange} values={formData} />;
     case 4:
       return <Summary formData={formData} />;
     default:

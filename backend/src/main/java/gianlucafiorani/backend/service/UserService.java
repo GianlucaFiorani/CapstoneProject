@@ -7,6 +7,7 @@ import gianlucafiorani.backend.entities.User;
 import gianlucafiorani.backend.exception.BadRequestException;
 import gianlucafiorani.backend.exception.NotFoundException;
 import gianlucafiorani.backend.exception.UnauthorizedException;
+import gianlucafiorani.backend.payload.EditUserDTO;
 import gianlucafiorani.backend.payload.NewUserDTO;
 import gianlucafiorani.backend.repositories.UsersRepository;
 import gianlucafiorani.backend.tools.JWTTools;
@@ -86,23 +87,19 @@ public class UserService {
     }
 
     // UPDATE
-    public User findByIdAndUpdate(UUID userId, NewUserDTO dto) {
+    public User findByIdAndUpdate(UUID userId, EditUserDTO dto) {
         User user = findById(userId);
 
 
-        if (!user.getEmail().equals(dto.email())) {
-            userRepository.findByEmail(dto.email()).ifPresent(u -> {
-                throw new BadRequestException("Email '" + dto.email() + "' already used");
+        if (!user.getUsername().equals(dto.username())) {
+            userRepository.findByUsername(dto.username()).ifPresent(u -> {
+                throw new BadRequestException("Username '" + u.getUsername() + "' already taken");
             });
         }
 
         user.setUsername(dto.username());
         user.setName(dto.name());
         user.setSurname(dto.surname());
-        user.setEmail(dto.email());
-        user.setPassword(passwordEncoder.encode(dto.password()));
-        user.setAvatar("https://ui-avatars.com/api/?name=" + dto.name() + "+" + dto.surname());
-
 
         return userRepository.save(user);
     }

@@ -6,11 +6,12 @@ import ReviewsArea from "./review/ReviewsArea";
 import PrintRating from "./review/PrintRating";
 import PlayerCheck from "./players/PlayerCheck";
 import bounce from "../../assets/img/bounce.gif";
+import airball from "../../assets/img/airball.png";
 import { jwtDecode } from "jwt-decode";
-import { BsThreeDots } from "react-icons/bs";
+import { BsPeopleFill, BsThreeDots } from "react-icons/bs";
 import ReportModal from "./ReportModal";
 import { useDispatch } from "react-redux";
-import { fetchCourtsAction, searchAction } from "../../redux/action";
+import { fetchCourtsAction, resetCourtsAction, searchAction } from "../../redux/action";
 
 const CourtDetails = () => {
   const params = useParams();
@@ -23,9 +24,77 @@ const CourtDetails = () => {
   const [toDeleteOrEdit, setToDeleteOrEdit] = useState(null);
   const [openEdit, setOpenEdit] = useState(false);
   const [newName, setNewName] = useState("");
+  const [isPresent, setIsPresent] = useState(false);
+  const [players, setPlayers] = useState([]);
   const token = localStorage.getItem("token");
   const decoded = jwtDecode(token);
   const navigate = useNavigate();
+
+  const fetchAndCheckPresence = (courtId) => {
+    fetch("http://localhost:3001/checkins/" + courtId, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Errore caricamento");
+        return res.json();
+      })
+      .then((data) => {
+        setPlayers(data);
+        const currentUserId = decoded.sub;
+        const isCheckedIn = data.some((player) => player.user.id === currentUserId);
+        setIsPresent(isCheckedIn);
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  };
+
+  const checkIn = (courtId) => {
+    fetch("http://localhost:3001/checkins/" + courtId, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Errore caricamento");
+        return res.json();
+      })
+      .then(() => {
+        fetchAndCheckPresence(courtId);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  };
+
+  const checkOut = async (courtId) => {
+    try {
+      const response = await fetch("http://localhost:3001/checkins/checkout", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Errore caricamento");
+      }
+
+      fetchAndCheckPresence(courtId);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchCourt = () => {
     if (!token) {
@@ -47,6 +116,8 @@ const CourtDetails = () => {
         .then((data) => {
           setCourt(data);
           setNewName(data.name);
+          dispatch(fetchCourtsAction(token, setLoading));
+          fetchAndCheckPresence(params.id);
           setLoading(false);
         })
         .catch((err) => {
@@ -65,18 +136,17 @@ const CourtDetails = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      if (response.ok) {
-        dispatch(searchAction(null, null));
-        dispatch(fetchCourtsAction(token, setError));
-        navigate("/");
-      } else {
-        throw new Error("Errore nel eliminazione del campo");
+      if (!response.ok) {
+        throw new Error("Errore nell'eliminazione del campo");
       }
+      dispatch(searchAction(null, null));
+      navigate("/");
+      dispatch(resetCourtsAction());
     } catch (error) {
       setError(error.message);
     } finally {
       setShowModal(false);
+      setLoading(false);
     }
   };
 
@@ -144,13 +214,21 @@ const CourtDetails = () => {
     return (
       <Container
         fluid
-        className="mt-5"
+        className="text-center d-flex align-items-center justify-content-center"
         style={{
           minHeight: "100vh",
           background: "linear-gradient(135deg, #e78f0cff 0%, #fbf6e0ff 100%)",
+          color: "#f1f1f1",
         }}
       >
-        <Alert variant="danger">{error}</Alert>
+        <div className="d-flex flex-column">
+          <div>
+            <img src={airball} alt="error 500" width={385} />
+          </div>
+          <h1 className="fascinate-regular text-black" style={{ fontSize: "4rem" }}>
+            500
+          </h1>
+        </div>
       </Container>
     );
   }
@@ -279,15 +357,37 @@ const CourtDetails = () => {
         </Dropdown>
 
         <h1 className="fascinate-regular fs-3 ">{court.name}</h1>
-        <PrintRating ratingAv={court.ratingAv} size={"20px"} />
+        <h2 className="d-flex mt-3 ">
+          <div className="d-flex">
+            <span className="fs-5">{court.ratingAv ? court.ratingAv : 0}</span>
+            <span className="fs-6 me-2">/5</span>
+          </div>
+          <div className="align-items-center">
+            <PrintRating ratingAv={court.ratingAv ? court.ratingAv : 0} size={"20px"} translate={"-12px"} />
+          </div>
+          <span className="fs-6 text-secondary ms-2">{"(" + (court.reviewCount ? court.reviewCount : 0) + ")"}</span>
+        </h2>
+        <div className="d-flex">
+          <Button
+            className="border-c2 border-3 fw-bold"
+            style={{ background: "#ffb114", color: "#795548 " }}
+            onClick={() => (isPresent ? checkOut(court.id) : checkIn(court.id))}
+          >
+            {isPresent ? "checkout" : "checkin"}
+          </Button>
+          <span className="ms-auto me-3 fw-bold fs-2">
+            <BsPeopleFill />
+            {players.length}
+          </span>
+        </div>
       </div>
 
       <div className="scroll-container">
         <div className="page page1">
-          <ReviewsArea />
+          <ReviewsArea fetchCourt={fetchCourt} />
         </div>
         <div className="page page2">
-          <PlayerCheck />
+          <PlayerCheck isPresent={isPresent} />
         </div>
         <div className="page page3">Coming soon ...</div>
       </div>

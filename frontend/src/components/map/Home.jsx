@@ -3,6 +3,7 @@ import { Container, Alert, Spinner, Button, ButtonGroup } from "react-bootstrap"
 import { useNavigate } from "react-router-dom";
 import Map from "./Map";
 import bounce from "../../assets/img/bounce.gif";
+import airball from "../../assets/img/airball.png";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCourtsAction } from "../../redux/action";
 
@@ -54,13 +55,21 @@ const Home = () => {
     return (
       <Container
         fluid
-        className="mt-5"
+        className="text-center d-flex align-items-center justify-content-center"
         style={{
           minHeight: "100vh",
           background: "linear-gradient(135deg, #e78f0cff 0%, #fbf6e0ff 100%)",
+          color: "#f1f1f1",
         }}
       >
-        <Alert variant="danger">{error}</Alert>
+        <div className="d-flex flex-column">
+          <div>
+            <img src={airball} alt="error 500" width={385} />
+          </div>
+          <h1 className="fascinate-regular text-black" style={{ fontSize: "4rem" }}>
+            500
+          </h1>
+        </div>
       </Container>
     );
   }

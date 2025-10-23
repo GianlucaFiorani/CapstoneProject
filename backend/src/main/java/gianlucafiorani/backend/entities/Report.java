@@ -31,6 +31,7 @@ public class Report {
     @ManyToOne
     private Review review;
 
+
     private LocalDateTime date;
 
     public Report( String message, User user,  BasketballCourt court) {

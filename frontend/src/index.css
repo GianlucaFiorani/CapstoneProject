@@ -54,3 +54,30 @@
 .leaflet-popup-content-wrapper {
   background: antiquewhite !important;
 }
+
+.shake {
+  border-color: #e70808 !important;
+  animation: shake 200ms;
+}
+.shake:focus {
+  border: none;
+  box-shadow: 0 0 0 0.2rem rgba(120, 66, 4, 0.432) !important;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(5px);
+  }
+  50% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

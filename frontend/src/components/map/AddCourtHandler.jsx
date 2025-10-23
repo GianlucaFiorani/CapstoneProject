@@ -7,6 +7,7 @@ import SingleMarker from "./SingleMarker";
 import { data } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { fetchCourtsAction } from "../../redux/action";
+import bounce from "../../assets/img/bounce.gif";
 
 const AddCourtHandler = ({ go }) => {
   const dispatch = useDispatch();
@@ -75,7 +76,9 @@ const AddCourtHandler = ({ go }) => {
         >
           <Popup>
             {loading ? (
-              <Spinner className="mt-5" animation="border" variant="danger" />
+              <div className="d-flex my-4 mx-2">
+                <Spinner animation="border" variant="warning" />
+              </div>
             ) : (
               <>
                 <h6>Aggiungi il nome del campo</h6>
